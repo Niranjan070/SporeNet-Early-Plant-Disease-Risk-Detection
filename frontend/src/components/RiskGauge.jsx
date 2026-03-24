@@ -21,16 +21,16 @@ export default function RiskGauge({ riskLevel, sporeCount, normalizedCount }) {
   const getGaugePosition = () => {
     const level = riskLevel?.toLowerCase();
     if (level === 'low') {
-      // Map normalized count 0-5 to gauge 0-0.33
-      const ratio = Math.min(normalizedCount / 5, 1);
+      // Map normalized count 0-150 to gauge 0-0.33
+      const ratio = Math.min(normalizedCount / 150, 1);
       return ratio * 0.33;
     } else if (level === 'moderate') {
-      // Map normalized count 5-20 to gauge 0.33-0.66
-      const ratio = Math.min((normalizedCount - 5) / 15, 1);
+      // Map normalized count 150-250 to gauge 0.33-0.66
+      const ratio = Math.min((normalizedCount - 150) / 100, 1);
       return 0.33 + ratio * 0.33;
     } else {
-      // Map normalized count 20-50 to gauge 0.66-1.0
-      const ratio = Math.min((normalizedCount - 20) / 30, 1);
+      // Map normalized count 250-500 to gauge 0.66-1.0 (assuming 500 max for gauge swing limit)
+      const ratio = Math.min((normalizedCount - 250) / 250, 1);
       return 0.66 + ratio * 0.34;
     }
   };

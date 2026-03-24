@@ -21,10 +21,10 @@ IOU_THRESHOLD = 0.45
 # Reference field of view (standard YOLO input size in pixels)
 REFERENCE_AREA = 640 * 640
 
-# Density-normalized thresholds
-LOW_RISK_THRESHOLD = 5       # normalized_count < 5 → Low Risk
-MODERATE_RISK_THRESHOLD = 20  # 5 ≤ normalized_count < 20 → Moderate Risk
-# normalized_count ≥ 20 → High Risk
+# Density-normalized thresholds (reference field 640x640)
+LOW_RISK_THRESHOLD = 150       # normalized_count < 150 → Low Risk
+MODERATE_RISK_THRESHOLD = 250  # 150 ≤ normalized_count < 250 → Moderate Risk
+# normalized_count ≥ 250 → High Risk
 
 # --- Spore Mapping ---
 # Maps model class names to disease information
