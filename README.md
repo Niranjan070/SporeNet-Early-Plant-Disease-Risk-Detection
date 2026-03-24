@@ -8,7 +8,7 @@ SporeNet allows farmers to upload microscopic images of airborne spores. A backe
 
 1. **Detect spores** — Identify Rice Blast (Magnaporthe oryzae) spores in the image
 2. **Count spores** — Count all detected spores with confidence scores
-3. **Assess risk** — Calculate density-normalized risk level (Low/Moderate/High)
+3. **Assess risk** — Calculate Spore Coverage Percentage risk level (Low/Moderate/High)
 4. **Recommend action** — Provide actionable farming recommendations
 
 ## 📁 Project Structure
@@ -23,7 +23,7 @@ sporenet/
 │   ├── routes/
 │   │   └── predict.py      # /predict endpoint
 │   ├── utils/
-│   │   ├── risk_calculator.py  # Density-based risk assessment
+│   │   ├── risk_calculator.py  # Spore coverage % risk assessment
 │   │   └── image_utils.py      # Image validation & annotation
 │   ├── static/outputs/     # Annotated output images
 │   └── requirements.txt
@@ -91,8 +91,8 @@ Upload a microscopic image for spore detection.
 {
   "spore_type": "Rice Blast (Magnaporthe oryzae)",
   "disease": "Rice Blast",
-  "spore_count": 12,
-  "normalized_count": 14.2,
+  "spore_count": 282,
+  "coverage_percent": 12.4,
   "risk_level": "Moderate",
   "confidence_avg": 0.87,
   "recommendation": "Apply preventive fungicide...",
@@ -110,15 +110,15 @@ Service info.
 
 ## 📊 Risk Assessment
 
-Risk is calculated using **density-normalized** spore counts:
+Risk is calculated using **Spore Coverage Percentage** (the total physical area of bounding boxes as a percentage of overall image area). This makes the system extremely resilient to different microscope zoom levels and camera resolutions.
 
-| Normalized Count | Risk Level | Action |
+| Coverage Area | Risk Level | Action |
 |:-:|:-:|---|
-| < 5 | 🟢 Low | Continue regular monitoring |
-| 5 – 19 | 🟡 Moderate | Apply preventive fungicide |
-| ≥ 20 | 🔴 High | Immediate systemic fungicide |
+| < 5.0% | 🟢 Low | Continue regular monitoring |
+| 5.0% – 15.0% | 🟡 Moderate | Apply preventive fungicide |
+| ≥ 15.0% | 🔴 High | Immediate systemic fungicide |
 
-> Normalization accounts for different image sizes by scaling spore counts to a 640×640 reference field of view.
+> By dividing the aggregated physical area of all detected spores by the total screen area, the engine measures direct infection density independent of scaling artifacts.
 
 ## 🛠️ Tech Stack
 
