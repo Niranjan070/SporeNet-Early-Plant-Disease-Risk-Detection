@@ -56,18 +56,21 @@
 
 .gauge-label-container {
   position: absolute;
-  bottom: 0;
+  bottom: 35px; /* Lift text above the needle pivot line */
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+  width: 100%;
 }
 
 .gauge-risk-label {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: var(--text-xl); /* Slightly smaller to fit gracefully */
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  white-space: nowrap; /* Prevent the text from breaking into two lines */
+  text-shadow: 0 2px 10px var(--color-bg-primary); /* Shadow to separate from needle if they cross */
 }
 
 .gauge-risk-label.low { color: var(--color-risk-low); }
