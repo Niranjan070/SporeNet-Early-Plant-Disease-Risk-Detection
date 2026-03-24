@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+venv/
+.env
+
+# Backend outputs
+backend/static/outputs/*
+!backend/static/outputs/.gitkeep
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model (large file - track with Git LFS or download separately)
+# Uncomment the line below if you don't want to push the model to GitHub
+# model/*.pt
