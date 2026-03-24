@@ -62,8 +62,8 @@ export default function RiskGauge({ riskLevel, sporeCount, normalizedCount }) {
   const fillLength = position * arcLength;
   const dashOffset = arcLength - fillLength;
 
-  // Needle angle
-  const needleAngle = -180 + position * 180;
+  // Needle angle (line points left at 0 deg, rotates clockwise to right at 180 deg)
+  const needleAngle = position * 180;
 
   // Color based on position
   const getColor = () => {
@@ -100,7 +100,10 @@ export default function RiskGauge({ riskLevel, sporeCount, normalizedCount }) {
           {/* Needle */}
           <g
             className="gauge-needle"
-            style={{ transform: `rotate(${animated ? needleAngle : -180}deg)` }}
+            style={{ 
+              transform: `rotate(${animated ? needleAngle : 0}deg)`,
+              transformOrigin: `${cx}px ${cy}px`
+            }}
           >
             <line className="gauge-needle-line" x1={cx} y1={cy} x2={cx - r + 15} y2={cy} />
             <circle className="gauge-needle-dot" cx={cx} cy={cy} r="5" />
