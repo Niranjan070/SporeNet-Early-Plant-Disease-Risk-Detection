@@ -9,7 +9,7 @@ import './RiskGauge.css';
  *  - Amber (Moderate): 33-66%
  *  - Red (High): 66-100%
  */
-export default function RiskGauge({ riskLevel, sporeCount, normalizedCount }) {
+export default function RiskGauge({ riskLevel, sporeCount, coveragePercent }) {
   const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
@@ -20,17 +20,19 @@ export default function RiskGauge({ riskLevel, sporeCount, normalizedCount }) {
   // Calculate gauge position (0 to 1) based on risk level
   const getGaugePosition = () => {
     const level = riskLevel?.toLowerCase();
+    
+    // Coverage % thresholds from backend: Low < 5%, Mod 5-15%, High > 15%
     if (level === 'low') {
-      // Map normalized count 0-150 to gauge 0-0.33
-      const ratio = Math.min(normalizedCount / 150, 1);
+      // Map coverage 0.0 - 5.0% to gauge 0.0 - 0.33
+      const ratio = Math.min(coveragePercent / 5.0, 1);
       return ratio * 0.33;
     } else if (level === 'moderate') {
-      // Map normalized count 150-250 to gauge 0.33-0.66
-      const ratio = Math.min((normalizedCount - 150) / 100, 1);
+      // Map coverage 5.0 - 15.0% to gauge 0.33 - 0.66
+      const ratio = Math.min((coveragePercent - 5.0) / 10.0, 1);
       return 0.33 + ratio * 0.33;
     } else {
-      // Map normalized count 250-500 to gauge 0.66-1.0 (assuming 500 max for gauge swing limit)
-      const ratio = Math.min((normalizedCount - 250) / 250, 1);
+      // Map coverage 15.0 - 30.0%+ to gauge 0.66 - 1.0 (capping swing around 30% for visual effect)
+      const ratio = Math.min((coveragePercent - 15.0) / 15.0, 1);
       return 0.66 + ratio * 0.34;
     }
   };
@@ -125,10 +127,10 @@ export default function RiskGauge({ riskLevel, sporeCount, normalizedCount }) {
 
       <div className="gauge-count">
         <div className="gauge-count-number" style={{ color: getColor() }}>
-          {sporeCount}
+          {coveragePercent}%
         </div>
         <div className="gauge-count-label">
-          Spores Detected {normalizedCount !== sporeCount && `(${normalizedCount} normalized)`}
+          Coverage Area ({sporeCount} Spores)
         </div>
       </div>
     </div>

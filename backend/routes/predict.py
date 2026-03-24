@@ -53,6 +53,7 @@ async def predict_spores(file: UploadFile = File(...)):
         # --- 5. Calculate risk ---
         risk_assessment = calculate_risk(
             spore_count=prediction["spore_count"],
+            total_spore_area=prediction["total_spore_area"],
             image_width=prediction["image_width"],
             image_height=prediction["image_height"],
         )
@@ -65,7 +66,7 @@ async def predict_spores(file: UploadFile = File(...)):
             "affected_crop": risk_assessment["affected_crop"],
             "description": risk_assessment["description"],
             "spore_count": prediction["spore_count"],
-            "normalized_count": risk_assessment["normalized_count"],
+            "coverage_percent": risk_assessment["coverage_percent"],
             "confidence_avg": prediction["confidence_avg"],
 
             # Risk assessment

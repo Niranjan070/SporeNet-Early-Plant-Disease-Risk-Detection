@@ -70,6 +70,7 @@ class SporePredictor:
         # Parse detections
         detections = []
         confidences = []
+        total_spore_area = 0.0
 
         for box in boxes:
             # Get bounding box coordinates (xyxy format)
@@ -77,6 +78,10 @@ class SporePredictor:
             confidence = float(box.conf[0])
             class_id = int(box.cls[0])
             class_name = self.class_names.get(class_id, "unknown")
+
+            # Calculate area of this bounding box
+            box_area = (x2 - x1) * (y2 - y1)
+            total_spore_area += box_area
 
             detections.append({
                 "class": class_name,
@@ -91,6 +96,7 @@ class SporePredictor:
         return {
             "detections": detections,
             "spore_count": spore_count,
+            "total_spore_area": total_spore_area,
             "confidence_avg": confidence_avg,
             "image_width": img_width,
             "image_height": img_height,

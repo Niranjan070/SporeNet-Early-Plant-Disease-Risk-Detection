@@ -15,7 +15,7 @@ export default function ResultsPanel({ results, onNewAnalysis }) {
     affected_crop,
     description,
     spore_count,
-    normalized_count,
+    coverage_percent,
     confidence_avg,
     risk_level,
     recommendation,
@@ -47,7 +47,7 @@ export default function ResultsPanel({ results, onNewAnalysis }) {
         <RiskGauge
           riskLevel={risk_level}
           sporeCount={spore_count}
-          normalizedCount={normalized_count}
+          coveragePercent={coverage_percent}
         />
       </div>
 
