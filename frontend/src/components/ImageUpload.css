@@ -11,7 +11,7 @@
   font-size: var(--text-2xl);
   font-weight: 700;
   margin-bottom: var(--space-2);
-  color: var(--color-text-primary);
+  color: var(--color-primary);
 }
 
 .upload-section-subtitle {
@@ -23,15 +23,13 @@
 /* Drop zone */
 .upload-dropzone {
   position: relative;
-  border: 2px dashed var(--color-border);
+  border: 1px dashed var(--color-border);
   border-radius: var(--radius-xl);
   padding: var(--space-12) var(--space-8);
   text-align: center;
   cursor: pointer;
   transition: all var(--transition-base);
-  background: var(--color-surface-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--color-bg-secondary);
   overflow: hidden;
 }
 
@@ -40,7 +38,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(135deg, transparent 40%, var(--color-primary-glow) 100%);
+  background: var(--color-primary-glow);
   opacity: 0;
   transition: opacity var(--transition-base);
 }
@@ -99,12 +97,12 @@
 }
 
 .format-badge {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
   padding: 2px 8px;
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
-  color: var(--color-primary-light);
+  color: var(--color-text-secondary);
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -175,7 +173,7 @@
   justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-xl);
   font-family: var(--font-primary);
   font-size: var(--text-base);
   font-weight: 600;
@@ -186,15 +184,15 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
   color: var(--color-text-inverse);
-  box-shadow: 0 4px 15px var(--color-primary-glow);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.2), 0 4px 12px var(--color-primary-glow);
   flex: 1;
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px var(--color-primary-glow);
+  transform: translateY(-1px);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.3), 0 6px 16px var(--color-primary-glow);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -207,15 +205,14 @@
 }
 
 .btn-secondary {
-  background: var(--color-surface);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+  border: none;
 }
 
 .btn-secondary:hover {
-  background: var(--color-surface-hover);
-  border-color: var(--color-border-hover);
-  color: var(--color-text-primary);
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
 }
 
 /* Loading state */
@@ -260,7 +257,7 @@
 
 .progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+  background: linear-gradient(90deg, var(--color-primary-light), var(--color-primary));
   border-radius: var(--radius-full);
   transition: width var(--transition-base);
 }

@@ -42,13 +42,13 @@ export default function App() {
     setToast({ type, message });
   };
 
-  const handleAnalyze = useCallback(async (file) => {
+  const handleAnalyze = useCallback(async (file, cropType) => {
     setIsLoading(true);
     setUploadProgress(0);
     setResults(null);
 
     try {
-      const data = await predictSpores(file, (progress) => {
+      const data = await predictSpores(file, cropType, (progress) => {
         setUploadProgress(progress);
       });
 
@@ -112,7 +112,7 @@ export default function App() {
             </h2>
             <p className="app-hero-description">
               Upload microscopic images of airborne spores. Our AI-powered detection
-              system identifies Rice Blast pathogens and assesses disease risk in seconds.
+              system identifies multiple plant pathogens and assesses disease risk in seconds.
             </p>
             <div className="feature-badges">
               <span className="feature-badge">🔬 YOLOv8 Detection</span>

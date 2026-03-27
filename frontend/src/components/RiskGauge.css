@@ -25,7 +25,7 @@
 
 .gauge-bg {
   fill: none;
-  stroke: var(--color-bg-tertiary);
+  stroke: var(--color-bg-secondary);
   stroke-width: 14;
   stroke-linecap: round;
 }
@@ -36,7 +36,6 @@
   stroke-linecap: round;
   transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1),
               stroke 0.5s ease;
-  filter: drop-shadow(0 0 8px currentColor);
 }
 
 .gauge-needle {

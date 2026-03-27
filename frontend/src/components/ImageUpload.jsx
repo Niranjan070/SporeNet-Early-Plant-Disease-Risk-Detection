@@ -9,6 +9,7 @@ const MAX_SIZE_MB = 10;
  */
 export default function ImageUpload({ onAnalyze, isLoading, uploadProgress }) {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [cropType, setCropType] = useState('Unknown');
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [error, setError] = useState('');
@@ -69,7 +70,7 @@ export default function ImageUpload({ onAnalyze, isLoading, uploadProgress }) {
 
   const handleAnalyze = () => {
     if (selectedFile && onAnalyze) {
-      onAnalyze(selectedFile);
+      onAnalyze(selectedFile, cropType);
     }
   };
 
@@ -155,6 +156,35 @@ export default function ImageUpload({ onAnalyze, isLoading, uploadProgress }) {
                     {formatFileSize(selectedFile.size)}
                   </span>
                 </div>
+              </div>
+
+              <div className="upload-options" style={{ marginTop: 'var(--space-4)' }}>
+                <label className="crop-label" style={{ display: 'block', marginBottom: 'var(--space-2)', color: 'var(--text-secondary)' }}>
+                  Crop Type (Optional for Gemini AI)
+                </label>
+                <select
+                  value={cropType}
+                  onChange={(e) => setCropType(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: 'var(--space-2) var(--space-3)',
+                    borderRadius: 'var(--radius-md)',
+                    background: 'var(--color-bg-tertiary)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text-primary)',
+                    outline: 'none',
+                    marginBottom: 'var(--space-4)'
+                  }}
+                >
+                  <option value="Unknown">Unknown / Auto Detect</option>
+                  <option value="Rice">Rice</option>
+                  <option value="Wheat">Wheat</option>
+                  <option value="Corn">Corn</option>
+                  <option value="Tomato">Tomato</option>
+                  <option value="Grasses">Grasses</option>
+                  <option value="Potato">Potato</option>
+                  <option value="Banana">Banana</option>
+                </select>
               </div>
 
               <div className="upload-actions">

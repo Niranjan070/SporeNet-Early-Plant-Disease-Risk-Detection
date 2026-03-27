@@ -18,9 +18,10 @@ const apiClient = axios.create({
  * @param {function} onProgress - Optional progress callback (0-100).
  * @returns {Promise<object>} Detection results with risk assessment.
  */
-export const predictSpores = async (imageFile, onProgress = null) => {
+export const predictSpores = async (imageFile, cropType = 'Unknown', onProgress = null) => {
   const formData = new FormData();
   formData.append('file', imageFile);
+  formData.append('crop_type', cropType);
 
   const response = await apiClient.post('/predict', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },

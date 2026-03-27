@@ -8,6 +8,9 @@ build/
 *.egg
 venv/
 .env
+*.env
+backend/.env
+frontend/.env
 
 # Backend outputs
 backend/static/outputs/*
@@ -29,5 +32,4 @@ frontend/dist/
 Thumbs.db
 
 # Model (large file - track with Git LFS or download separately)
-# Uncomment the line below if you don't want to push the model to GitHub
-# model/*.pt
+model/*.pt

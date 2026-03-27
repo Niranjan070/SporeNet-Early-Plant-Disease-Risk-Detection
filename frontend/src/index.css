@@ -7,43 +7,48 @@
 
 /* --- CSS Custom Properties (Design Tokens) --- */
 :root {
-  /* Colors - Agriculture-inspired dark theme */
-  --color-bg-primary: #050d09;
-  --color-bg-secondary: #0a1a12;
-  --color-bg-tertiary: #0f261a;
-  --color-surface: rgba(15, 38, 26, 0.6);
-  --color-surface-hover: rgba(20, 50, 35, 0.8);
-  --color-surface-glass: rgba(15, 38, 26, 0.35);
-  --color-border: rgba(16, 185, 129, 0.15);
-  --color-border-hover: rgba(16, 185, 129, 0.3);
+  /* Colors - Earth-Modern Agricultural Intelligence */
+  --color-bg-primary: #f8f9fa;
+  --color-bg-secondary: #f3f4f5;
+  --color-bg-tertiary: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8f9fa;
+  --color-surface-glass: rgba(255, 255, 255, 0.8);
+  --color-border: rgba(193, 200, 194, 0.15); /* outline_variant 15% */
+  --color-border-hover: rgba(193, 200, 194, 0.4);
 
-  /* Primary palette */
-  --color-primary: #10B981;
-  --color-primary-light: #34D399;
-  --color-primary-dark: #059669;
-  --color-primary-glow: rgba(16, 185, 129, 0.25);
+  /* Primary palette (Deep forest green) */
+  --color-primary: #002d1c;
+  --color-primary-light: #00452e;
+  --color-primary-dark: #002114;
+  --color-primary-glow: rgba(0, 45, 28, 0.15);
 
-  /* Accent */
-  --color-accent: #14B8A6;
-  --color-accent-light: #2DD4BF;
+  --color-primary-fixed: #b1f0ce;
+
+  /* Secondary */
+  --color-accent: #7a5649;
+  --color-accent-light: #fdcdbc;
+  
+  /* Tertiary */
+  --color-tertiary: #3b1f00;
 
   /* Risk level colors */
-  --color-risk-low: #10B981;
-  --color-risk-moderate: #F59E0B;
-  --color-risk-high: #EF4444;
-  --color-risk-low-bg: rgba(16, 185, 129, 0.1);
-  --color-risk-moderate-bg: rgba(245, 158, 11, 0.1);
-  --color-risk-high-bg: rgba(239, 68, 68, 0.1);
+  --color-risk-low: #00452e;
+  --color-risk-moderate: #7a5649;
+  --color-risk-high: #ba1a1a;
+  --color-risk-low-bg: rgba(0, 69, 46, 0.1);
+  --color-risk-moderate-bg: rgba(122, 86, 73, 0.1);
+  --color-risk-high-bg: rgba(186, 26, 26, 0.1);
 
   /* Text */
-  --color-text-primary: #F0FDF4;
-  --color-text-secondary: rgba(240, 253, 244, 0.7);
-  --color-text-tertiary: rgba(240, 253, 244, 0.45);
-  --color-text-inverse: #050d09;
+  --color-text-primary: #191c1d;
+  --color-text-secondary: #414844;
+  --color-text-tertiary: #717973;
+  --color-text-inverse: #ffffff;
 
   /* Typography */
-  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-primary: 'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Font sizes */
@@ -69,6 +74,7 @@
   --space-12: 3rem;
   --space-16: 4rem;
   --space-20: 5rem;
+  --space-24: 6rem;
 
   /* Radii */
   --radius-sm: 0.5rem;
@@ -78,10 +84,10 @@
   --radius-full: 9999px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 30px var(--color-primary-glow);
+  --shadow-sm: 0 1px 3px rgba(25, 28, 29, 0.04);
+  --shadow-md: 0 4px 12px rgba(25, 28, 29, 0.06);
+  --shadow-lg: 0 12px 40px rgba(25, 28, 29, 0.06);
+  --shadow-glow: 0 12px 40px rgba(0, 45, 28, 0.08);
 
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -124,9 +130,8 @@ body::before {
   right: 0;
   bottom: 0;
   background:
-    radial-gradient(ellipse at 20% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(20, 184, 166, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(5, 150, 105, 0.04) 0%, transparent 70%);
+    radial-gradient(ellipse at 80% -20%, rgba(0, 45, 28, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse at -20% 80%, rgba(122, 86, 73, 0.03) 0%, transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -143,22 +148,22 @@ body::before {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-secondary);
+  background: var(--color-bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary-dark);
+  background: var(--color-text-tertiary);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+  background: var(--color-text-secondary);
 }
 
 /* --- Selection --- */
 ::selection {
-  background: var(--color-primary);
-  color: var(--color-text-inverse);
+  background: var(--color-primary-fixed);
+  color: var(--color-primary-dark);
 }
 
 /* --- Animations --- */
@@ -228,14 +233,12 @@ body::before {
 /* --- Utility Classes --- */
 .glass {
   background: var(--color-surface-glass);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--color-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-md);
 }
 
 .glass-strong {
   background: var(--color-surface);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
 }

@@ -6,10 +6,22 @@ AI-powered system that detects airborne plant spores from microscopic images, co
 
 SporeNet allows farmers to upload microscopic images of airborne spores. A backend API runs a trained YOLOv8 object detection model to:
 
-1. **Detect spores** — Identify Rice Blast (Magnaporthe oryzae) spores in the image
-2. **Count spores** — Count all detected spores with confidence scores
-3. **Assess risk** — Calculate Spore Coverage Percentage risk level (Low/Moderate/High)
-4. **Recommend action** — Provide actionable farming recommendations
+1. **Detect spores** — Identify multiple plant pathogen spores (e.g., Rice Blast, Alternaria, Fusarium) in the image
+2. **Count spores** — Count all detected spores with confidence scores and categorize by species
+3. **Assess risk** — Calculate Spore Coverage Percentage and leverage **Gemini AI** to perform context-aware risk level evaluations.
+4. **Recommend action** — Provide actionable farming recommendations tailored dynamically by Gemini AI to the crop type.
+
+## 🦠 Supported Pathogens
+
+The underlying YOLOv8 model (`best.pt`) has been upgraded to detect the following 9 fungal classes:
+
+- **Magnaporthe oryzae** (Rice Blast)
+- **Alternaria** (Early Blight / Leaf Spot)
+- **Bipolaris** (Leaf Blight)
+- **Curvularia** & **Curvularia eragrostidis** (Leaf Spots)
+- **Exserohilum** (Northern Corn Leaf Blight)
+- **Fusarium** & **Fusarium Microconidia** (Fusarium Wilt)
+- **Mycelium** (General fungal growth)
 
 ## 📁 Project Structure
 
@@ -47,6 +59,14 @@ sporenet/
 - npm
 
 ### Backend Setup
+
+1. **Configure API Keys (Optional but Recommended)**
+Create a `.env` file in the `backend` folder and add your Gemini API key to enable intelligent insights.
+```env
+GEMINI_API_KEY="your_api_key_here"
+```
+
+2. **Start the Backend**
 
 ```bash
 cd backend
@@ -89,8 +109,9 @@ Upload a microscopic image for spore detection.
 **Response:**
 ```json
 {
-  "spore_type": "Rice Blast (Magnaporthe oryzae)",
+  "spore_type": "Magnaporthe oryzae (Rice Blast)",
   "disease": "Rice Blast",
+  "affected_crop": "Rice",
   "spore_count": 282,
   "coverage_percent": 12.4,
   "risk_level": "Moderate",
@@ -125,7 +146,7 @@ Risk is calculated using **Spore Coverage Percentage** (the total physical area 
 | Layer | Technology |
 |-------|-----------|
 | Model | Ultralytics YOLOv8 |
-| Backend | FastAPI, OpenCV, Pillow |
+| Backend | FastAPI, OpenCV, Pillow, Google Gemini API |
 | Frontend | React, Vite, Axios |
 | Styling | Vanilla CSS (Glassmorphism dark theme) |
 
