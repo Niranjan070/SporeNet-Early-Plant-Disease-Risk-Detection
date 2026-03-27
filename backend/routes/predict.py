@@ -47,6 +47,13 @@ async def predict_spores(file: UploadFile = File(...)):
         logger.info(f"Running inference on: {file.filename}")
         prediction = predictor.predict(upload_path)
 
+        # Determine the primary class
+        main_class = "default"
+        if prediction["detections"]:
+            from collections import Counter
+            class_counts = Counter(d["class"] for d in prediction["detections"])
+            main_class = class_counts.most_common(1)[0][0]
+
         # --- 4. Generate annotated image ---
         annotated_url = generate_annotated_image(prediction["results_obj"])
 
@@ -56,6 +63,7 @@ async def predict_spores(file: UploadFile = File(...)):
             total_spore_area=prediction["total_spore_area"],
             image_width=prediction["image_width"],
             image_height=prediction["image_height"],
+            main_class=main_class
         )
 
         # --- 6. Build response ---

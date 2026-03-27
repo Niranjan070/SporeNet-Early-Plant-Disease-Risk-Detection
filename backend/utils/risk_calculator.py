@@ -10,7 +10,7 @@ from config import (
 )
 
 
-def calculate_risk(spore_count: int, total_spore_area: float, image_width: int, image_height: int) -> dict:
+def calculate_risk(spore_count: int, total_spore_area: float, image_width: int, image_height: int, main_class: str = "default") -> dict:
     """
     Calculate disease risk based on spore coverage percentage.
 
@@ -73,7 +73,7 @@ def calculate_risk(spore_count: int, total_spore_area: float, image_width: int, 
         ]
 
     # Get disease info
-    disease_info = SPORE_DISEASE_MAP.get("default", {})
+    disease_info = SPORE_DISEASE_MAP.get(main_class, SPORE_DISEASE_MAP.get("default", {}))
 
     return {
         "risk_level": risk_level,
