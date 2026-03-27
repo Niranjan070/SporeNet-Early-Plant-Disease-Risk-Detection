@@ -3,9 +3,10 @@ SporeNet Prediction Route
 POST /predict endpoint for spore detection and risk assessment.
 """
 
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from models.predictor import predictor
 from utils.risk_calculator import calculate_risk
+from utils.gemini_service import generate_risk_assessment
 from utils.image_utils import validate_image, save_upload, generate_annotated_image, cleanup_file
 import logging
 
@@ -15,16 +16,20 @@ router = APIRouter()
 
 
 @router.post("/predict")
-async def predict_spores(file: UploadFile = File(...)):
+async def predict_spores(
+    file: UploadFile = File(...),
+    crop_type: str = Form("Unknown")
+):
     """
     Predict spores in an uploaded microscopic image.
 
     Accepts a microscopic image, runs YOLOv8 detection, counts spores,
-    calculates density-based disease risk, and returns results with
-    an annotated image.
+    calculates density-based disease risk, optionally uses Gemini AI for
+    intelligent recommendations, and returns results with an annotated image.
 
     Args:
         file: Uploaded image file (jpg, jpeg, or png).
+        crop_type: The type of plant the sample was taken from.
 
     Returns:
         JSON with spore type, count, risk level, recommendations,
@@ -58,13 +63,26 @@ async def predict_spores(file: UploadFile = File(...)):
         annotated_url = generate_annotated_image(prediction["results_obj"])
 
         # --- 5. Calculate risk ---
-        risk_assessment = calculate_risk(
+        # First attempt Gemini AI dynamic assessment
+        risk_assessment = generate_risk_assessment(
+            detections=prediction["detections"],
             spore_count=prediction["spore_count"],
             total_spore_area=prediction["total_spore_area"],
             image_width=prediction["image_width"],
             image_height=prediction["image_height"],
-            main_class=main_class
+            main_class=main_class,
+            crop_type=crop_type
         )
+        
+        # Fallback to local deterministic risk assessment if Gemini fails or is unconfigured
+        if not risk_assessment:
+            risk_assessment = calculate_risk(
+                spore_count=prediction["spore_count"],
+                total_spore_area=prediction["total_spore_area"],
+                image_width=prediction["image_width"],
+                image_height=prediction["image_height"],
+                main_class=main_class
+            )
 
         # --- 6. Build response ---
         response = {
