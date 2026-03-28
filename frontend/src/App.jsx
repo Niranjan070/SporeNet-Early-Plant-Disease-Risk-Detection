@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import AIAssistants from './components/AIAssistants';
+import AIAssistants, { FarmingAssistantPanel } from './components/AIAssistants';
 import { checkHealth, getImageUrl, predictSpores } from './services/api';
 import './App.css';
 
@@ -60,6 +60,7 @@ function formatFileSize(file) {
 
 function getRiskTone(level = '') {
   if (!level) return 'pending';
+
   const normalized = level.toLowerCase();
   if (normalized === 'high') return 'high';
   if (normalized === 'moderate') return 'moderate';
@@ -149,6 +150,7 @@ export default function App() {
         setBackendStatus({ state, detail, aiReady });
       } catch (error) {
         if (!isMounted) return;
+
         setBackendStatus({
           state: 'offline',
           detail: 'Frontend is running, but the backend could not be reached',
@@ -274,356 +276,375 @@ export default function App() {
         </div>
       </header>
 
-      <main className="app-main">
-        <section className="hero-panel" id="overview">
-          <article className="hero-copy">
-            <p className="section-kicker">Integrated AI Workflow</p>
-            <h2 className="hero-title">
-              One frontend for <span className="hero-accent">YOLO detection</span>, disease prediction, and live
-              Gemini assistants.
-            </h2>
-            <p className="hero-body">
-              The application now keeps the full flow in one place: upload the microscope image, review the detected
-              spore and frequency, then talk to Gemini for both general farming help and image-specific diagnosis.
-            </p>
+      <div className="app-layout">
+        <main className="app-main">
+          <section className="hero-panel" id="overview">
+            <article className="hero-copy">
+              <p className="section-kicker">Integrated AI Workflow</p>
+              <h2 className="hero-title">
+                One frontend for <span className="hero-accent">YOLO detection</span>, disease prediction, and live
+                Gemini assistants.
+              </h2>
+              <p className="hero-body">
+                The application now keeps the full flow in one place: upload the microscope image, review the detected
+                spore and frequency, then talk to Gemini for both general farming help and image-specific diagnosis.
+              </p>
 
-            <div className="hero-actions">
-              <button className="primary-button" type="button" onClick={() => scrollToSection('analysis-lab')}>
-                Start microscope analysis
-              </button>
-              <button className="secondary-button" type="button" onClick={() => scrollToSection('ai-assistants')}>
-                Open AI assistants
-              </button>
-            </div>
-
-            <div className="hero-stat-grid">
-              <article className="stat-card">
-                <span className="stat-label">Model Readiness</span>
-                <strong className="stat-value">
-                  {backendStatus.state === 'ready'
-                    ? 'Ready'
-                    : backendStatus.state === 'degraded'
-                      ? 'Partial'
-                      : backendStatus.state === 'offline'
-                        ? 'Offline'
-                        : 'Checking'}
-                </strong>
-                <p className="stat-helper">{backendStatus.detail}</p>
-              </article>
-
-              <article className="stat-card">
-                <span className="stat-label">Detection Logic</span>
-                <strong className="stat-value">YOLO + frequency</strong>
-                <p className="stat-helper">Count, coverage, and class breakdown shape the disease signal.</p>
-              </article>
-
-              <article className="stat-card">
-                <span className="stat-label">Gemini Assistants</span>
-                <strong className="stat-value">{backendStatus.aiReady ? 'Live' : 'Waiting'}</strong>
-                <p className="stat-helper">The farming chat and image diagnosis assistant use the backend Gemini key.</p>
-              </article>
-            </div>
-          </article>
-
-          <aside className="hero-side-stack">
-            {capabilityCards.map((card) => (
-              <article className="capability-card" key={card.id}>
-                <span className="capability-id">{card.id}</span>
-                <h3>{card.title}</h3>
-                <p>{card.description}</p>
-              </article>
-            ))}
-
-            <article className="process-card">
-              <p className="section-kicker process-kicker">Core Flow</p>
-              <ul className="process-list">
-                {workflowSteps.map((step, index) => (
-                  <li className="process-item" key={step}>
-                    <span className="process-index">{index + 1}</span>
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          </aside>
-        </section>
-
-        <section className="analysis-layout" id="analysis-lab">
-          <article className="workspace-card">
-            <div className="card-header">
-              <div>
-                <p className="section-kicker">Analysis Lab</p>
-                <h2 className="card-title">Upload a microscopic image and inspect the real result</h2>
-                <p className="card-subtitle">
-                  The new frontend removes demo values. This workspace only fills with actual backend output after the
-                  farmer uploads a sample.
-                </p>
+              <div className="hero-actions">
+                <button className="primary-button" type="button" onClick={() => scrollToSection('analysis-lab')}>
+                  Start microscope analysis
+                </button>
+                <button className="secondary-button" type="button" onClick={() => scrollToSection('ai-assistants')}>
+                  Open AI assistants
+                </button>
               </div>
-              <span className="soft-badge">{isLoading ? 'Analyzing now' : 'Awaiting sample'}</span>
-            </div>
 
-            <label
-              className={`upload-dropzone ${isDragging ? 'dragging' : ''} ${previewUrl ? 'has-file' : ''}`}
-              onDragEnter={() => setIsDragging(true)}
-              onDragLeave={() => setIsDragging(false)}
-              onDragOver={(event) => {
-                event.preventDefault();
-                setIsDragging(true);
-              }}
-              onDrop={(event) => {
-                event.preventDefault();
-                setIsDragging(false);
-                updateSelectedFile(event.dataTransfer.files?.[0]);
-              }}
-            >
-              <input
-                className="file-input"
-                type="file"
-                accept="image/png,image/jpeg,image/jpg"
-                onChange={handleFileChange}
-              />
+              <div className="hero-stat-grid">
+                <article className="stat-card">
+                  <span className="stat-label">Model Readiness</span>
+                  <strong className="stat-value">
+                    {backendStatus.state === 'ready'
+                      ? 'Ready'
+                      : backendStatus.state === 'degraded'
+                        ? 'Partial'
+                        : backendStatus.state === 'offline'
+                          ? 'Offline'
+                          : 'Checking'}
+                  </strong>
+                  <p className="stat-helper">{backendStatus.detail}</p>
+                </article>
 
-              {previewUrl ? (
-                <div className="upload-preview">
-                  <img src={previewUrl} alt="Microscope sample preview" />
-                  <div className="preview-panel">
-                    <div>
-                      <span className="preview-label">Selected Image</span>
-                      <p className="preview-file-name">{selectedFile?.name}</p>
-                      <p className="preview-meta">{formatFileSize(selectedFile)}</p>
-                    </div>
+                <article className="stat-card">
+                  <span className="stat-label">Detection Logic</span>
+                  <strong className="stat-value">YOLO + frequency</strong>
+                  <p className="stat-helper">Count, coverage, and class breakdown shape the disease signal.</p>
+                </article>
 
-                    <div className="preview-footnote">
-                      Drop another image here anytime to replace the current sample before analysis.
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="upload-empty">
-                  <span className="preview-label">Drag and drop or click to browse</span>
-                  <h3>Microscope image workspace</h3>
-                  <p>
-                    Add a JPG or PNG sample captured from the slide. The system will detect spore types, count their
-                    frequency, and estimate early disease risk.
+                <article className="stat-card">
+                  <span className="stat-label">Gemini Assistants</span>
+                  <strong className="stat-value">{backendStatus.aiReady ? 'Live' : 'Waiting'}</strong>
+                  <p className="stat-helper">
+                    The farming chat and image diagnosis assistant use the backend Gemini key.
+                  </p>
+                </article>
+              </div>
+            </article>
+
+            <aside className="hero-side-stack">
+              {capabilityCards.map((card) => (
+                <article className="capability-card" key={card.id}>
+                  <span className="capability-id">{card.id}</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </article>
+              ))}
+
+              <article className="process-card">
+                <p className="section-kicker process-kicker">Core Flow</p>
+                <ul className="process-list">
+                  {workflowSteps.map((step, index) => (
+                    <li className="process-item" key={step}>
+                      <span className="process-index">{index + 1}</span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </aside>
+          </section>
+
+          <section className="analysis-layout" id="analysis-lab">
+            <article className="workspace-card">
+              <div className="card-header">
+                <div>
+                  <p className="section-kicker">Analysis Lab</p>
+                  <h2 className="card-title">Upload a microscopic image and inspect the real result</h2>
+                  <p className="card-subtitle">
+                    The new frontend removes demo values. This workspace only fills with actual backend output after
+                    the farmer uploads a sample.
                   </p>
                 </div>
-              )}
-            </label>
+                <span className="soft-badge">{isLoading ? 'Analyzing now' : 'Awaiting sample'}</span>
+              </div>
 
-            <div className="field-row">
-              <div className="field-group">
-                <label className="field-label" htmlFor="crop-type">
-                  Crop type
-                </label>
+              <label
+                className={`upload-dropzone ${isDragging ? 'dragging' : ''} ${previewUrl ? 'has-file' : ''}`}
+                onDragEnter={() => setIsDragging(true)}
+                onDragLeave={() => setIsDragging(false)}
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  setIsDragging(true);
+                }}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  setIsDragging(false);
+                  updateSelectedFile(event.dataTransfer.files?.[0]);
+                }}
+              >
                 <input
-                  className="text-input"
-                  id="crop-type"
-                  type="text"
-                  value={cropType}
-                  onChange={(event) => setCropType(event.target.value)}
-                  placeholder="Rice, wheat, chilli, tomato..."
+                  className="file-input"
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg"
+                  onChange={handleFileChange}
                 />
-              </div>
 
-              <div className="field-group">
-                <span className="field-label">Current sample</span>
-                <div className="input-display">{selectedFile ? selectedFile.name : 'No sample selected yet'}</div>
-              </div>
-            </div>
+                {previewUrl ? (
+                  <div className="upload-preview">
+                    <img src={previewUrl} alt="Microscope sample preview" />
+                    <div className="preview-panel">
+                      <div>
+                        <span className="preview-label">Selected Image</span>
+                        <p className="preview-file-name">{selectedFile?.name}</p>
+                        <p className="preview-meta">{formatFileSize(selectedFile)}</p>
+                      </div>
 
-            {isLoading && (
-              <div className="progress-shell" aria-live="polite">
-                <div className="progress-meta">
-                  <span>Uploading and analyzing</span>
-                  <span>{uploadProgress}%</span>
-                </div>
-                <div className="progress-track">
-                  <div className="progress-fill" style={{ width: `${uploadProgress}%` }} />
-                </div>
-              </div>
-            )}
+                      <div className="preview-footnote">
+                        Drop another image here anytime to replace the current sample before analysis.
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="upload-empty">
+                    <span className="preview-label">Drag and drop or click to browse</span>
+                    <h3>Microscope image workspace</h3>
+                    <p>
+                      Add a JPG or PNG sample captured from the slide. The system will detect spore types, count their
+                      frequency, and estimate early disease risk.
+                    </p>
+                  </div>
+                )}
+              </label>
 
-            <div className="action-row">
-              <button className="primary-button" type="button" onClick={handleAnalyze} disabled={isLoading}>
-                {isLoading ? 'Analyzing sample...' : 'Analyze spores'}
-              </button>
-              <button className="ghost-button" type="button" onClick={handleReset}>
-                Clear workspace
-              </button>
-            </div>
-          </article>
-
-          <article className="workspace-card" id="analysis-results">
-            <div className="card-header">
-              <div>
-                <p className="section-kicker">Outcome Snapshot</p>
-                <h2 className="card-title">Real analysis result</h2>
-                <p className="card-subtitle">
-                  Primary spore type, count, coverage, confidence, and crop-aware recommendation all surface here.
-                </p>
-              </div>
-              {results ? <span className={`risk-chip ${riskTone}`}>{results.risk_level} risk</span> : null}
-            </div>
-
-            {results ? (
-              <>
-                <div className="snapshot-grid">
-                  <article className="snapshot-card">
-                    <span className="snapshot-label">Detected Spore</span>
-                    <strong>{results.spore_type}</strong>
-                  </article>
-                  <article className="snapshot-card">
-                    <span className="snapshot-label">Spore Count</span>
-                    <strong>{formatNumber(results.spore_count)}</strong>
-                  </article>
-                  <article className="snapshot-card">
-                    <span className="snapshot-label">Coverage</span>
-                    <strong>{formatPercent(results.coverage_percent)}</strong>
-                  </article>
-                  <article className="snapshot-card">
-                    <span className="snapshot-label">Avg Confidence</span>
-                    <strong>{formatConfidence(results.confidence_avg)}</strong>
-                  </article>
+              <div className="field-row">
+                <div className="field-group">
+                  <label className="field-label" htmlFor="crop-type">
+                    Crop type
+                  </label>
+                  <input
+                    className="text-input"
+                    id="crop-type"
+                    type="text"
+                    value={cropType}
+                    onChange={(event) => setCropType(event.target.value)}
+                    placeholder="Rice, wheat, chilli, tomato..."
+                  />
                 </div>
 
-                <div className="summary-note">
-                  <h3>{results.disease}</h3>
-                  <p>{results.recommendation}</p>
+                <div className="field-group">
+                  <span className="field-label">Current sample</span>
+                  <div className="input-display">{selectedFile ? selectedFile.name : 'No sample selected yet'}</div>
                 </div>
-              </>
-            ) : (
-              <div className="placeholder-state">
-                Upload a real microscope image to activate this panel. It intentionally stays empty until the backend
-                returns an actual prediction.
               </div>
-            )}
-          </article>
-        </section>
 
-        <section className="results-grid">
-          <article className="detail-card">
-            <div className="card-header">
-              <div>
-                <p className="section-kicker">Detection View</p>
-                <h2 className="card-title">Annotated output image</h2>
+              {isLoading ? (
+                <div className="progress-shell" aria-live="polite">
+                  <div className="progress-meta">
+                    <span>Uploading and analyzing</span>
+                    <span>{uploadProgress}%</span>
+                  </div>
+                  <div className="progress-track">
+                    <div className="progress-fill" style={{ width: `${uploadProgress}%` }} />
+                  </div>
+                </div>
+              ) : null}
+
+              <div className="action-row">
+                <button className="primary-button" type="button" onClick={handleAnalyze} disabled={isLoading}>
+                  {isLoading ? 'Analyzing sample...' : 'Analyze spores'}
+                </button>
+                <button className="ghost-button" type="button" onClick={handleReset}>
+                  Clear workspace
+                </button>
               </div>
-            </div>
+            </article>
 
-            <div className="visual-stage">
-              {results?.annotated_image_url ? (
-                <img src={getImageUrl(results.annotated_image_url)} alt="Annotated spore detection result" />
-              ) : previewUrl ? (
-                <img src={previewUrl} alt="Microscope sample awaiting annotation" />
+            <article className="workspace-card" id="analysis-results">
+              <div className="card-header">
+                <div>
+                  <p className="section-kicker">Outcome Snapshot</p>
+                  <h2 className="card-title">Real analysis result</h2>
+                  <p className="card-subtitle">
+                    Primary spore type, count, coverage, confidence, and crop-aware recommendation all surface here.
+                  </p>
+                </div>
+                {results ? <span className={`risk-chip ${riskTone}`}>{results.risk_level} risk</span> : null}
+              </div>
+
+              {results ? (
+                <>
+                  <div className="snapshot-grid">
+                    <article className="snapshot-card">
+                      <span className="snapshot-label">Detected Spore</span>
+                      <strong>{results.spore_type}</strong>
+                    </article>
+                    <article className="snapshot-card">
+                      <span className="snapshot-label">Spore Count</span>
+                      <strong>{formatNumber(results.spore_count)}</strong>
+                    </article>
+                    <article className="snapshot-card">
+                      <span className="snapshot-label">Coverage</span>
+                      <strong>{formatPercent(results.coverage_percent)}</strong>
+                    </article>
+                    <article className="snapshot-card">
+                      <span className="snapshot-label">Avg Confidence</span>
+                      <strong>{formatConfidence(results.confidence_avg)}</strong>
+                    </article>
+                  </div>
+
+                  <div className="summary-note">
+                    <h3>{results.disease}</h3>
+                    <p>{results.recommendation}</p>
+                  </div>
+                </>
               ) : (
-                <div className="placeholder-stage">
-                  The annotated detection image will appear here after YOLO processes an uploaded sample.
+                <div className="placeholder-state">
+                  Upload a real microscope image to activate this panel. It intentionally stays empty until the backend
+                  returns an actual prediction.
                 </div>
               )}
-            </div>
+            </article>
+          </section>
 
-            <div className="visual-stage-caption">
-              {results?.annotated_image_url
-                ? 'YOLO annotations are now visible on the processed sample.'
-                : previewUrl
-                  ? 'Preview loaded. Run the analysis to generate bounding-box annotations.'
-                  : 'No image loaded yet.'}
-            </div>
-          </article>
-
-          <article className="detail-card">
-            <div className="card-header">
-              <div>
-                <p className="section-kicker">Disease Intelligence</p>
-                <h2 className="card-title">Grouped detections and prevention detail</h2>
+          <section className="results-grid">
+            <article className="detail-card">
+              <div className="card-header">
+                <div>
+                  <p className="section-kicker">Detection View</p>
+                  <h2 className="card-title">Annotated output image</h2>
+                </div>
               </div>
-            </div>
 
-            {results ? (
-              <>
+              <div className="visual-stage">
+                {results?.annotated_image_url ? (
+                  <img src={getImageUrl(results.annotated_image_url)} alt="Annotated spore detection result" />
+                ) : previewUrl ? (
+                  <img src={previewUrl} alt="Microscope sample awaiting annotation" />
+                ) : (
+                  <div className="placeholder-stage">
+                    The annotated detection image will appear here after YOLO processes an uploaded sample.
+                  </div>
+                )}
+              </div>
+
+              <div className="visual-stage-caption">
+                {results?.annotated_image_url
+                  ? 'YOLO annotations are now visible on the processed sample.'
+                  : previewUrl
+                    ? 'Preview loaded. Run the analysis to generate bounding-box annotations.'
+                    : 'No image loaded yet.'}
+              </div>
+            </article>
+
+            <article className="detail-card">
+              <div className="card-header">
+                <div>
+                  <p className="section-kicker">Disease Intelligence</p>
+                  <h2 className="card-title">Grouped detections and prevention detail</h2>
+                </div>
+              </div>
+
+              {results ? (
+                <>
+                  <div className="summary-panel">
+                    <h3>{results.disease}</h3>
+                    <p>{results.description}</p>
+                  </div>
+
+                  <div className="split-column">
+                    <div>
+                      <h3 className="list-title">Detected spore clusters</h3>
+                      {groupedDetections.length ? (
+                        <ul className="detection-list">
+                          {groupedDetections.map((group) => (
+                            <li className="detection-item" key={group.name}>
+                              <div>
+                                <strong>{group.name}</strong>
+                                <p>{group.count} detections</p>
+                              </div>
+                              <span>{group.averageConfidence.toFixed(1)}% avg confidence</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <div className="placeholder-state">
+                          No spore clusters were returned for this sample, so the result should be treated as a clean
+                          or uncertain image until another capture confirms it.
+                        </div>
+                      )}
+                    </div>
+
+                    <div>
+                      <h3 className="list-title">Recommended precautions</h3>
+                      {(results.precautions || []).length ? (
+                        <ul className="precaution-list">
+                          {(results.precautions || []).map((item) => (
+                            <li className="precaution-item" key={item}>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <div className="placeholder-state">
+                          The backend did not return prevention actions for this run, so the image assistant can help
+                          you expand the response using Gemini.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="placeholder-state">
+                  Disease description, grouped detections, and prevention items will appear here after the first real
+                  backend response.
+                </div>
+              )}
+            </article>
+
+            <article className="detail-card full-span">
+              <div className="card-header">
+                <div>
+                  <p className="section-kicker">Frequency Signal</p>
+                  <h2 className="card-title">How the sample supports early prediction</h2>
+                </div>
+              </div>
+
+              <div className="frequency-panel">
                 <div className="summary-panel">
-                  <h3>{results.disease}</h3>
-                  <p>{results.description}</p>
+                  <h3>Frequency-aware reading</h3>
+                  <p>{buildFrequencyNarrative(results)}</p>
                 </div>
 
-                <div className="split-column">
-                  <div>
-                    <h3 className="list-title">Detected spore clusters</h3>
-                    {groupedDetections.length ? (
-                      <ul className="detection-list">
-                        {groupedDetections.map((group) => (
-                          <li className="detection-item" key={group.name}>
-                            <div>
-                              <strong>{group.name}</strong>
-                              <p>{group.count} detections</p>
-                            </div>
-                            <span>{group.averageConfidence.toFixed(1)}% avg confidence</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <div className="placeholder-state">
-                        No spore clusters were returned for this sample, so the result should be treated as a clean or
-                        uncertain image until another capture confirms it.
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    <h3 className="list-title">Recommended precautions</h3>
-                    {(results.precautions || []).length ? (
-                      <ul className="precaution-list">
-                        {(results.precautions || []).map((item) => (
-                          <li className="precaution-item" key={item}>
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <div className="placeholder-state">
-                        The backend did not return prevention actions for this run, so the image assistant can help you
-                        expand the response using Gemini.
-                      </div>
-                    )}
-                  </div>
+                <div className={`frequency-meter ${riskTone}`}>
+                  <span className="stat-label">Current Risk</span>
+                  <strong className="meter-value">{results?.risk_level || 'Waiting'}</strong>
+                  <p>
+                    {results
+                      ? `${formatNumber(results.spore_count)} spores detected in this sample`
+                      : 'Upload a sample to compute the first risk signal'}
+                  </p>
                 </div>
-              </>
-            ) : (
-              <div className="placeholder-state">
-                Disease description, grouped detections, and prevention items will appear here after the first real
-                backend response.
               </div>
-            )}
-          </article>
+            </article>
+          </section>
 
-          <article className="detail-card full-span">
-            <div className="card-header">
-              <div>
-                <p className="section-kicker">Frequency Signal</p>
-                <h2 className="card-title">How the sample supports early prediction</h2>
-              </div>
+          <AIAssistants aiReady={backendStatus.aiReady} cropType={cropType} results={results} onToast={showToast} />
+        </main>
+
+        <aside className="app-assistant-rail" aria-label="General farming assistant">
+          <div className="assistant-rail-sticky">
+            <div className="assistant-rail-intro">
+              <p className="section-kicker">Right-side Assistant</p>
+              <h2>Ask farming questions from anywhere in the app</h2>
+              <p>
+                This panel stays with you while you upload slides, inspect detections, and review the image diagnosis
+                on the left.
+              </p>
             </div>
 
-            <div className="frequency-panel">
-              <div className="summary-panel">
-                <h3>Frequency-aware reading</h3>
-                <p>{buildFrequencyNarrative(results)}</p>
-              </div>
-
-              <div className={`frequency-meter ${riskTone}`}>
-                <span className="stat-label">Current Risk</span>
-                <strong className="meter-value">{results?.risk_level || 'Waiting'}</strong>
-                <p>
-                  {results
-                    ? `${formatNumber(results.spore_count)} spores detected in this sample`
-                    : 'Upload a sample to compute the first risk signal'}
-                </p>
-              </div>
-            </div>
-          </article>
-        </section>
-
-        <AIAssistants aiReady={backendStatus.aiReady} cropType={cropType} results={results} onToast={showToast} />
-      </main>
+            <FarmingAssistantPanel aiReady={backendStatus.aiReady} cropType={cropType} onToast={showToast} docked />
+          </div>
+        </aside>
+      </div>
 
       {toast ? <div className={`toast ${toast.tone}`}>{toast.message}</div> : null}
     </div>

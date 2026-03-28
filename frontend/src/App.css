@@ -4,6 +4,15 @@
   padding: 1.25rem;
 }
 
+.app-layout {
+  max-width: 108rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 24rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+
 .app-header,
 .hero-copy,
 .hero-side-stack,
@@ -22,7 +31,7 @@
   position: sticky;
   top: 1rem;
   z-index: 10;
-  max-width: 80rem;
+  max-width: 108rem;
   margin: 0 auto 1.5rem;
   padding: 1rem 1.25rem;
   display: flex;
@@ -148,11 +157,44 @@
 }
 
 .app-main {
-  max-width: 80rem;
-  margin: 0 auto;
+  min-width: 0;
   display: grid;
   gap: 1.5rem;
   padding-bottom: 3rem;
+}
+
+.app-assistant-rail {
+  min-width: 0;
+}
+
+.assistant-rail-sticky {
+  position: sticky;
+  top: 6.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.assistant-rail-intro {
+  padding: 1.2rem 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 1.7rem;
+  background:
+    radial-gradient(circle at top right, rgba(211, 154, 54, 0.14), transparent 32%),
+    linear-gradient(145deg, rgba(255, 251, 245, 0.94), rgba(239, 246, 241, 0.9));
+  box-shadow: var(--shadow-lg);
+}
+
+.assistant-rail-intro h2 {
+  margin-top: 0.55rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 2vw, 2.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+}
+
+.assistant-rail-intro p {
+  margin-top: 0.8rem;
+  color: var(--ink-2);
 }
 
 .hero-panel,
@@ -774,6 +816,34 @@
   gap: 1rem;
 }
 
+.persistent-assistant-card {
+  background:
+    radial-gradient(circle at top right, rgba(211, 154, 54, 0.12), transparent 28%),
+    linear-gradient(160deg, rgba(255, 251, 245, 0.96), rgba(243, 247, 244, 0.94));
+}
+
+.persistent-assistant-card .conversation-panel {
+  background: rgba(249, 244, 236, 0.78);
+}
+
+.persistent-assistant-card .message-list {
+  min-height: 14rem;
+  max-height: clamp(16rem, 28vh, 22rem);
+}
+
+.persistent-assistant-card .assistant-input {
+  min-height: 6rem;
+}
+
+.persistent-assistant-card .assistant-actions .primary-button {
+  width: 100%;
+  justify-content: center;
+}
+
+.diagnosis-section-card {
+  min-width: 0;
+}
+
 .helper-note {
   padding: 0.95rem 1rem;
   border: 1px solid var(--line);
@@ -1181,6 +1251,25 @@
   }
 }
 
+@media (max-width: 96rem) {
+  .hero-panel,
+  .analysis-layout,
+  .results-grid,
+  .frequency-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 90rem) {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .assistant-rail-sticky {
+    position: static;
+  }
+}
+
 @media (max-width: 70rem) {
   .hero-panel,
   .analysis-layout,
@@ -1257,5 +1346,10 @@
     left: 0.8rem;
     bottom: 0.8rem;
     max-width: none;
+  }
+
+  .assistant-rail-intro {
+    padding: 1rem 1.1rem;
+    border-radius: 1.5rem;
   }
 }
