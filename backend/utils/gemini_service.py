@@ -133,6 +133,11 @@ def _string_list(value: Any) -> list[str]:
     return []
 
 
+def _compact_list(value: Any, limit: int = 4) -> list[str]:
+    """Normalize a value into a short list suitable for UI cards."""
+    return _string_list(value)[:limit]
+
+
 def _format_history(history: list[dict[str, str]] | None) -> str:
     """Serialize recent chat history into a prompt-friendly block."""
     if not history:
@@ -245,12 +250,12 @@ Do not include markdown.
         return None
 
 
-def generate_farming_chat_reply(
+def generate_farming_chat_response(
     message: str,
     crop_type: str = "",
     history: list[dict[str, str]] | None = None,
-) -> str:
-    """Generate a Gemini response for the general farming assistant."""
+) -> dict[str, Any]:
+    """Generate a structured Gemini response for the general farming assistant."""
     prompt = f"""
 You are SporeNet Farm Assistant, a practical agricultural support chatbot for farmers.
 
@@ -260,7 +265,7 @@ Your mission:
 - Prefer practical and low-cost advice when possible.
 - Mention uncertainty clearly if the information is incomplete.
 - Do not invent pesticide dosages or region-specific legal guidance.
-- End with 2 to 4 practical next steps.
+- Keep the response very easy for a farmer to scan on a mobile screen.
 
 Farmer crop context:
 {crop_type.strip() or "Unknown crop"}
@@ -270,9 +275,45 @@ Conversation so far:
 
 Latest farmer question:
 {message.strip()}
+
+Return strict JSON with exactly these keys:
+{{
+  "headline": "",
+  "simple_answer": "",
+  "why_it_happens": "",
+  "do_now": [],
+  "prevent_next_time": [],
+  "warning_signs": [],
+  "when_to_get_help": "",
+  "farmer_message": ""
+}}
+
+Rules:
+- headline: max 8 words
+- simple_answer: max 2 short sentences
+- why_it_happens: max 2 short sentences
+- do_now: 2 to 4 short bullet items
+- prevent_next_time: 2 to 4 short bullet items
+- warning_signs: 1 to 3 short bullet items
+- when_to_get_help: max 2 short sentences
+- farmer_message: max 2 short sentences
+- Do not return markdown.
 """
 
-    return _call_model(prompt)
+    result = _parse_json_response(_call_model(prompt))
+
+    return {
+        "headline": str(result.get("headline", "Farming guidance")).strip() or "Farming guidance",
+        "simple_answer": str(result.get("simple_answer", "")).strip(),
+        "why_it_happens": str(result.get("why_it_happens", "")).strip(),
+        "do_now": _compact_list(result.get("do_now")),
+        "prevent_next_time": _compact_list(result.get("prevent_next_time")),
+        "warning_signs": _compact_list(result.get("warning_signs"), limit=3),
+        "when_to_get_help": str(result.get("when_to_get_help", "")).strip(),
+        "farmer_message": str(result.get("farmer_message", "")).strip()
+        or str(result.get("simple_answer", "")).strip()
+        or "Guidance is ready.",
+    }
 
 
 def generate_image_diagnosis(
@@ -336,6 +377,11 @@ Return strict JSON with exactly these keys:
 
 Do not return markdown.
 Do not invent measurements not present in the input.
+- Keep every paragraph short and easy to scan on mobile.
+- headline: max 10 words.
+- spore_explanation, frequency_interpretation, disease_outlook, farmer_message: max 2 short sentences each.
+- immediate_actions, next_week_actions, monitoring_plan: 2 to 4 short bullet items each.
+- urgent_flags: 0 to 3 short bullet items.
 """
 
     result = _parse_json_response(_call_model(prompt))
@@ -345,9 +391,9 @@ Do not invent measurements not present in the input.
         "spore_explanation": str(result.get("spore_explanation", "")).strip(),
         "frequency_interpretation": str(result.get("frequency_interpretation", "")).strip(),
         "disease_outlook": str(result.get("disease_outlook", "")).strip(),
-        "immediate_actions": _string_list(result.get("immediate_actions")),
-        "next_week_actions": _string_list(result.get("next_week_actions")),
-        "monitoring_plan": _string_list(result.get("monitoring_plan")),
-        "urgent_flags": _string_list(result.get("urgent_flags")),
+        "immediate_actions": _compact_list(result.get("immediate_actions")),
+        "next_week_actions": _compact_list(result.get("next_week_actions")),
+        "monitoring_plan": _compact_list(result.get("monitoring_plan")),
+        "urgent_flags": _compact_list(result.get("urgent_flags"), limit=3),
         "farmer_message": str(result.get("farmer_message", "")).strip(),
     }

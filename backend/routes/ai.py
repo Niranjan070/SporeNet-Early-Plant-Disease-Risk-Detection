@@ -10,7 +10,7 @@ from typing import Any, Literal
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
-from utils.gemini_service import generate_farming_chat_reply, generate_image_diagnosis
+from utils.gemini_service import generate_farming_chat_response, generate_image_diagnosis
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,7 @@ class FarmingChatResponse(BaseModel):
     """Response payload for the general farming assistant."""
 
     reply: str
+    advice: dict[str, Any]
 
 
 class ImageDiagnosisRequest(BaseModel):
@@ -58,12 +59,15 @@ class ImageDiagnosisResponse(BaseModel):
 async def farming_chat(request: FarmingChatRequest) -> FarmingChatResponse:
     """Handle general farming questions through Gemini."""
     try:
-        reply = generate_farming_chat_reply(
+        advice = generate_farming_chat_response(
             message=request.message,
             crop_type=request.crop_type,
             history=[item.model_dump() for item in request.history],
         )
-        return FarmingChatResponse(reply=reply)
+        return FarmingChatResponse(
+            reply=advice.get("farmer_message") or advice.get("simple_answer") or "Guidance is ready.",
+            advice=advice,
+        )
     except RuntimeError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
     except Exception as exc:
