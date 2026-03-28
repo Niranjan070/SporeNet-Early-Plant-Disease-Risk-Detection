@@ -1,16 +1,62 @@
-# React + Vite
+# SporeNet Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is the React interface for SporeNet. It connects to the FastAPI backend, lets users upload microscope images, shows YOLO-based spore analysis results, and includes two Gemini-powered assistant experiences inside the UI.
 
-Currently, two official plugins are available:
+## UI Layout
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Main workspace: upload, analysis results, annotated image, grouped detections, and image diagnosis assistant
+- Right rail: docked general farming assistant that stays available across the app on desktop
 
-## React Compiler
+On smaller screens, the right-side assistant moves below the main content for a cleaner mobile layout.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Scripts
 
-## Expanding the ESLint configuration
+Install dependencies:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+```
+
+Start development server:
+
+```bash
+npm run dev
+```
+
+Create production build:
+
+```bash
+npm run build
+```
+
+Preview production build:
+
+```bash
+npm run preview
+```
+
+## Backend Requirement
+
+The frontend expects the backend API to be running, typically at:
+
+```text
+http://localhost:8000
+```
+
+If needed, update the frontend API base configuration in:
+
+```text
+src/services/api.js
+```
+
+## Main Frontend Areas
+
+- `src/App.jsx`: overall page structure and analysis workflow
+- `src/components/AIAssistants.jsx`: docked farming assistant and image diagnosis assistant
+- `src/services/api.js`: frontend API calls
+- `src/App.css`: application styling and responsive layout
+
+## Notes
+
+- This app is designed around real backend output, not mock analysis results
+- Gemini features depend on the backend being configured with a valid `GEMINI_API_KEY`

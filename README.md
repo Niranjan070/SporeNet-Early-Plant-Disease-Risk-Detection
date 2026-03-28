@@ -1,22 +1,32 @@
 # SporeNet
 
-SporeNet is a plant disease intelligence app for microscopic spore images. Farmers or field technicians upload a microscope image, a YOLO model detects fungal spores, the backend estimates disease risk from spore frequency and coverage, and Gemini powers two in-app AI assistants:
+SporeNet is a microscope-image analysis application for early plant disease support. A farmer or field technician uploads a microscopic image, the backend runs YOLO to detect fungal spores, the system estimates spore frequency and disease risk, and Gemini powers two assistants inside the same app:
 
-- a general farming assistant for crop and disease questions
-- an image diagnosis assistant that explains the uploaded sample and suggests next steps
+- a docked farming assistant for general crop questions
+- an image diagnosis assistant that explains the current analyzed sample
 
-## What It Does
+## Final Application Flow
 
-- Detects fungal spores from microscopic images using YOLO
-- Counts detected spores and computes slide coverage percentage
-- Estimates early disease risk from the detected spore pattern
-- Generates annotated output images for visual review
-- Answers general farming questions through a Gemini-powered assistant
-- Produces image-specific diagnosis and prevention guidance through a second Gemini assistant
+The current UI is organized like this:
+
+- Left side: microscope image upload, YOLO analysis, annotated output, grouped detections, disease summary, and image-linked AI diagnosis
+- Right side: always-available farming assistant that stays visible while the user works through the rest of the app
+
+This makes the app feel like one continuous workflow instead of separate tools.
+
+## Core Features
+
+- Upload a microscope image from the field or lab
+- Detect fungal spores using a trained YOLO model
+- Count spores and estimate coverage percentage
+- Predict an early disease signal from spore type and frequency
+- Show an annotated output image for review
+- Ask Gemini for general farming support inside the app
+- Ask Gemini for image-specific diagnosis based on the real YOLO result
 
 ## Supported Spore Classes
 
-The current YOLO model is configured for these classes:
+The current model supports:
 
 - `magnaporthe_oryzae`
 - `alternaria`
@@ -38,33 +48,35 @@ The current YOLO model is configured for these classes:
 
 ```text
 sporenet/
-├─ backend/
-│  ├─ main.py
-│  ├─ config.py
-│  ├─ requirements.txt
-│  ├─ routes/
-│  │  ├─ predict.py
-│  │  └─ ai.py
-│  ├─ models/
-│  │  └─ predictor.py
-│  ├─ utils/
-│  │  ├─ gemini_service.py
-│  │  ├─ image_utils.py
-│  │  └─ risk_calculator.py
-│  └─ static/outputs/
-├─ frontend/
-│  ├─ package.json
-│  ├─ vite.config.js
-│  └─ src/
-├─ model/
-│  └─ best.pt
-└─ README.md
+|-- backend/
+|   |-- main.py
+|   |-- config.py
+|   |-- requirements.txt
+|   |-- routes/
+|   |   |-- predict.py
+|   |   `-- ai.py
+|   |-- models/
+|   |   `-- predictor.py
+|   |-- utils/
+|   |   |-- gemini_service.py
+|   |   |-- image_utils.py
+|   |   `-- risk_calculator.py
+|   `-- static/
+|       `-- outputs/
+|-- frontend/
+|   |-- package.json
+|   |-- vite.config.js
+|   |-- README.md
+|   `-- src/
+|-- model/
+|   `-- best.pt
+`-- README.md
 ```
 
 ## Prerequisites
 
-- Python 3.10+
-- Node.js 18+
+- Python 3.10 or newer
+- Node.js 18 or newer
 - npm
 
 ## Setup
@@ -95,6 +107,7 @@ Backend URLs:
 
 - API: `http://localhost:8000`
 - Docs: `http://localhost:8000/docs`
+- Health: `http://localhost:8000/health`
 
 ### 2. Frontend
 
@@ -126,32 +139,42 @@ Uploads a microscope image and returns:
 
 ### `POST /ai/chat`
 
-General Gemini-powered farming assistant.
+Gemini-powered general farming assistant.
 
 ### `POST /ai/image-diagnosis`
 
-Gemini-powered diagnosis tied to a completed microscope analysis result.
+Gemini-powered diagnosis tied to the current analyzed microscope image.
 
 ### `GET /health`
 
-Returns backend readiness, model readiness, and Gemini readiness.
+Returns backend status, YOLO model readiness, and Gemini readiness.
 
 ## Model File
 
-The repository expects a YOLO weights file at `model/best.pt`.
+The backend expects YOLO weights at:
 
-If you do not commit model weights to GitHub, make sure contributors know they must place the trained file there manually before running the backend.
+```text
+model/best.pt
+```
+
+If model weights are not committed to GitHub, contributors must place the trained file there before starting the backend.
+
+## Environment Notes
+
+- `GEMINI_API_KEY` is required for both assistant features
+- `GEMINI_MODEL` should usually be `gemini-2.5-flash`
+- the backend also includes model fallback logic if a Gemini model name becomes unavailable
 
 ## GitHub Notes
 
 This repo is configured to ignore:
 
 - `.env` files
-- virtual environments
+- Python virtual environments
 - `node_modules`
 - frontend build output
 - generated backend output images
-- Python and tooling caches
+- common Python and tooling cache files
 
 ## License
 
