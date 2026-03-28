@@ -1,107 +1,31 @@
-/* ============================================================
-   SporeNet Design System
-   Global tokens, utilities, and base styles
-   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&family=Outfit:wght@500;600;700&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
-/* --- CSS Custom Properties (Design Tokens) --- */
 :root {
-  /* Colors - Earth-Modern Agricultural Intelligence */
-  --color-bg-primary: #f8f9fa;
-  --color-bg-secondary: #f3f4f5;
-  --color-bg-tertiary: #ffffff;
-  --color-surface: #ffffff;
-  --color-surface-hover: #f8f9fa;
-  --color-surface-glass: rgba(255, 255, 255, 0.8);
-  --color-border: rgba(193, 200, 194, 0.15); /* outline_variant 15% */
-  --color-border-hover: rgba(193, 200, 194, 0.4);
-
-  /* Primary palette (Deep forest green) */
-  --color-primary: #002d1c;
-  --color-primary-light: #00452e;
-  --color-primary-dark: #002114;
-  --color-primary-glow: rgba(0, 45, 28, 0.15);
-
-  --color-primary-fixed: #b1f0ce;
-
-  /* Secondary */
-  --color-accent: #7a5649;
-  --color-accent-light: #fdcdbc;
-  
-  /* Tertiary */
-  --color-tertiary: #3b1f00;
-
-  /* Risk level colors */
-  --color-risk-low: #00452e;
-  --color-risk-moderate: #7a5649;
-  --color-risk-high: #ba1a1a;
-  --color-risk-low-bg: rgba(0, 69, 46, 0.1);
-  --color-risk-moderate-bg: rgba(122, 86, 73, 0.1);
-  --color-risk-high-bg: rgba(186, 26, 26, 0.1);
-
-  /* Text */
-  --color-text-primary: #191c1d;
-  --color-text-secondary: #414844;
-  --color-text-tertiary: #717973;
-  --color-text-inverse: #ffffff;
-
-  /* Typography */
-  --font-primary: 'Public Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-
-  /* Font sizes */
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.25rem;
-  --text-2xl: 1.5rem;
-  --text-3xl: 1.875rem;
-  --text-4xl: 2.25rem;
-  --text-5xl: 3rem;
-
-  /* Spacing */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.25rem;
-  --space-6: 1.5rem;
-  --space-8: 2rem;
-  --space-10: 2.5rem;
-  --space-12: 3rem;
-  --space-16: 4rem;
-  --space-20: 5rem;
-  --space-24: 6rem;
-
-  /* Radii */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(25, 28, 29, 0.04);
-  --shadow-md: 0 4px 12px rgba(25, 28, 29, 0.06);
-  --shadow-lg: 0 12px 40px rgba(25, 28, 29, 0.06);
-  --shadow-glow: 0 12px 40px rgba(0, 45, 28, 0.08);
-
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --bg-base: #f4eedf;
+  --bg-warm: #eadfca;
+  --surface: rgba(255, 251, 244, 0.88);
+  --surface-strong: #fffaf2;
+  --ink-1: #1f3528;
+  --ink-2: #44584c;
+  --ink-3: #7a877d;
+  --line: rgba(39, 68, 52, 0.12);
+  --line-strong: rgba(39, 68, 52, 0.2);
+  --accent: #2d6b50;
+  --accent-strong: #224c38;
+  --accent-soft: #d7eadf;
+  --sun: #d39a36;
+  --danger: #9e4337;
+  --shadow-lg: 0 18px 45px rgba(48, 59, 45, 0.1);
+  --shadow-xl: 0 28px 60px rgba(48, 59, 45, 0.14);
+  --font-primary: 'DM Sans', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --transition-base: 180ms ease;
 }
 
-/* --- Reset & Base --- */
 *,
 *::before,
 *::after {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
@@ -113,132 +37,64 @@ html {
 }
 
 body {
-  font-family: var(--font-primary);
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  line-height: 1.6;
+  margin: 0;
   min-height: 100vh;
   overflow-x: hidden;
+  color: var(--ink-1);
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  background:
+    radial-gradient(circle at top right, rgba(211, 154, 54, 0.18), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(45, 107, 80, 0.14), transparent 28%),
+    linear-gradient(180deg, #f7f2e8 0%, var(--bg-base) 58%, #efe6d6 100%);
 }
 
-/* Background gradient */
 body::before {
   content: '';
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(ellipse at 80% -20%, rgba(0, 45, 28, 0.04) 0%, transparent 60%),
-    radial-gradient(ellipse at -20% 80%, rgba(122, 86, 73, 0.03) 0%, transparent 60%);
+  inset: 0;
   pointer-events: none;
-  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black 45%, transparent 88%);
+  opacity: 0.35;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  color: inherit;
 }
 
 #root {
   position: relative;
-  z-index: 1;
   min-height: 100vh;
 }
 
-/* --- Scrollbar --- */
-::-webkit-scrollbar {
-  width: 6px;
+::selection {
+  background: rgba(45, 107, 80, 0.2);
+  color: var(--ink-1);
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-bg-primary);
+::-webkit-scrollbar {
+  width: 0.6rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-text-tertiary);
-  border-radius: var(--radius-full);
+  border-radius: 999px;
+  background: rgba(39, 68, 52, 0.28);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-secondary);
-}
-
-/* --- Selection --- */
-::selection {
-  background: var(--color-primary-fixed);
-  color: var(--color-primary-dark);
-}
-
-/* --- Animations --- */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px var(--color-primary-glow); }
-  50% { box-shadow: 0 0 40px var(--color-primary-glow), 0 0 60px rgba(16, 185, 129, 0.1); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes count-up {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* --- Utility Classes --- */
-.glass {
-  background: var(--color-surface-glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: var(--shadow-md);
-}
-
-.glass-strong {
-  background: var(--color-surface);
-  box-shadow: var(--shadow-lg);
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.22);
 }

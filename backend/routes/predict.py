@@ -8,6 +8,7 @@ from models.predictor import predictor
 from utils.risk_calculator import calculate_risk
 from utils.gemini_service import generate_risk_assessment
 from utils.image_utils import validate_image, save_upload, generate_annotated_image, cleanup_file
+from config import SPORE_DISEASE_MAP
 import logging
 
 logger = logging.getLogger(__name__)
@@ -59,6 +60,8 @@ async def predict_spores(
             class_counts = Counter(d["class"] for d in prediction["detections"])
             main_class = class_counts.most_common(1)[0][0]
 
+        disease_info = SPORE_DISEASE_MAP.get(main_class, SPORE_DISEASE_MAP.get("default", {}))
+
         # --- 4. Generate annotated image ---
         annotated_url = generate_annotated_image(prediction["results_obj"])
 
@@ -87,19 +90,19 @@ async def predict_spores(
         # --- 6. Build response ---
         response = {
             # Spore detection results
-            "spore_type": risk_assessment["spore_type"],
-            "disease": risk_assessment["disease"],
-            "affected_crop": risk_assessment["affected_crop"],
-            "description": risk_assessment["description"],
+            "spore_type": risk_assessment.get("spore_type", disease_info.get("spore_type", "Unknown")),
+            "disease": risk_assessment.get("disease", disease_info.get("disease", "Unknown Disease")),
+            "affected_crop": risk_assessment.get("affected_crop", disease_info.get("affected_crop", "Unknown")),
+            "description": risk_assessment.get("description", disease_info.get("description", "")),
             "spore_count": prediction["spore_count"],
-            "coverage_percent": risk_assessment["coverage_percent"],
+            "coverage_percent": risk_assessment.get("coverage_percent", 0.0),
             "confidence_avg": prediction["confidence_avg"],
 
             # Risk assessment
-            "risk_level": risk_assessment["risk_level"],
-            "risk_color": risk_assessment["risk_color"],
-            "recommendation": risk_assessment["recommendation"],
-            "precautions": risk_assessment["precautions"],
+            "risk_level": risk_assessment.get("risk_level", "Unknown"),
+            "risk_color": risk_assessment.get("risk_color", "#EF4444"),
+            "recommendation": risk_assessment.get("recommendation", "No recommendation available."),
+            "precautions": risk_assessment.get("precautions", []),
 
             # Detection details
             "detections": prediction["detections"],

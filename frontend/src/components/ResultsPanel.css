@@ -1,250 +1,379 @@
 /* ============================================================
-   ResultsPanel Component Styles
+   ResultsPanel Complete Design Refactor
    ============================================================ */
 
-.results-panel {
-  animation: fadeInUp 0.6s ease-out;
+.results-panel-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.results-panel-title {
+/* Header */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-4);
+}
+
+.breadcrumbs {
+  font-size: 0.85rem;
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-2);
+}
+
+.results-main-title {
   font-family: var(--font-display);
-  font-size: var(--text-2xl);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.results-actions {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.results-actions button {
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: white;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+}
+
+/* Grid Layout */
+.results-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-6);
+}
+
+/* Left Column */
+.results-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.image-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: black;
+  height: 500px; /* Matching ratio of preview image */
+  position: relative;
+  box-shadow: var(--shadow-md);
+}
+
+.mock-image {
+  width: 100%;
+  height: 100%;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/4/4b/Rust_fungi_urediniospores.jpg') center/cover;
+  position: relative;
+}
+
+.mock-box {
+  position: absolute;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+  border-radius: 4px;
+}
+
+.box-1 {
+  top: 25%; left: 35%;
+  border: 2px dashed #EF4444;
+  background: #EF4444;
+  transform: translate(0, -100%);
+}
+
+.box-2 {
+  top: 35%; left: 60%;
+  border: 2px dashed #F59E0B;
+  background: #F59E0B;
+  transform: translate(0, -100%);
+}
+
+.image-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.image-controls span {
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.image-controls .mag {
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--color-primary);
-  margin-bottom: var(--space-6);
+  margin-left: 10px;
+  border-left: 1px solid #ccc;
+  padding-left: 15px;
+}
+
+/* Stats Row */
+.stats-cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.stat-box {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+  border-left: 4px solid var(--color-primary);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.stat-val {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.stat-up {
+  font-size: 0.9rem;
+  color: #10B981;
+  font-weight: 600;
+}
+
+/* Right Column */
+.results-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.panel-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.card-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.card-heading h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.filter-icon {
+  font-size: 1.2rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.card-heading-small {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-4);
+  text-transform: uppercase;
+}
+
+/* Spore List */
+.spore-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.spore-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.spore-item-info {
   display: flex;
   align-items: center;
   gap: var(--space-3);
 }
 
-/* Stats grid */
-.results-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
-}
-
-.stat-card {
-  padding: var(--space-4) var(--space-5);
-  border-radius: var(--radius-lg);
-  animation: slide-in-right 0.4s ease-out;
-  animation-fill-mode: backwards;
-}
-
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
-
-.stat-card-label {
-  font-size: var(--text-xs);
-  color: var(--color-text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  margin-bottom: var(--space-2);
-}
-
-.stat-card-value {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  color: var(--color-text-primary);
-}
-
-.stat-card-value.spore-type {
-  font-size: var(--text-lg);
-  color: var(--color-primary-light);
-}
-
-/* Risk badge */
-.risk-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.risk-badge.low {
-  background: var(--color-risk-low-bg);
-  color: var(--color-risk-low);
-  border: 1px solid rgba(0, 69, 46, 0.2);
-}
-
-.risk-badge.moderate {
-  background: var(--color-risk-moderate-bg);
-  color: var(--color-risk-moderate);
-  border: 1px solid rgba(122, 86, 73, 0.2);
-}
-
-.risk-badge.high {
-  background: var(--color-risk-high-bg);
-  color: var(--color-risk-high);
-  border: 1px solid rgba(186, 26, 26, 0.2);
-}
-
-.risk-badge-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: currentColor;
-  animation: pulse-glow 1.5s ease-in-out infinite;
-}
-
-/* Recommendation section */
-.results-recommendation {
-  margin-top: var(--space-6);
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  animation: fadeInUp 0.5s ease-out 0.3s backwards;
-}
-
-.results-recommendation.low {
-  background: var(--color-risk-low-bg);
-  border: 1px solid rgba(0, 69, 46, 0.15);
-}
-
-.results-recommendation.moderate {
-  background: var(--color-risk-moderate-bg);
-  border: 1px solid rgba(122, 86, 73, 0.15);
-}
-
-.results-recommendation.high {
-  background: var(--color-risk-high-bg);
-  border: 1px solid rgba(186, 26, 26, 0.15);
-}
-
-.recommendation-title {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  margin-bottom: var(--space-3);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.recommendation-text {
-  font-size: var(--text-base);
-  color: var(--color-text-secondary);
-  line-height: 1.7;
-  margin-bottom: var(--space-4);
-}
-
-/* Precautions list */
-.precautions-title {
-  font-size: var(--text-sm);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: var(--space-3);
-  color: var(--color-text-secondary);
-}
-
-.precautions-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.precautions-list li {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  padding-left: var(--space-5);
-  position: relative;
-  line-height: 1.6;
-}
-
-.precautions-list li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-/* Disease info */
-.disease-info {
-  margin-top: var(--space-6);
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  animation: fadeInUp 0.5s ease-out 0.5s backwards;
-}
-
-.disease-info-title {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--color-primary);
-  margin-bottom: var(--space-3);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.disease-info-text {
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  line-height: 1.7;
-}
-
-.disease-meta {
-  display: flex;
-  gap: var(--space-4);
-  margin-top: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.disease-meta-item {
-  font-size: var(--text-sm);
-  color: var(--color-text-tertiary);
-}
-
-.disease-meta-item strong {
-  color: var(--color-text-secondary);
-}
-
-/* New analysis button */
-.new-analysis-btn {
-  margin-top: var(--space-6);
-  width: 100%;
-  padding: var(--space-4);
-  border-radius: var(--radius-xl);
-  font-family: var(--font-primary);
-  font-size: var(--text-base);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-base);
-  background: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
+.spore-item-icon {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 6px;
+  font-size: 1.1rem;
+}
+
+.spore-item-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.spore-item-desc {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.spore-item-count {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+}
+
+.count-num {
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.count-label {
+  font-size: 0.65rem;
+  color: var(--color-text-tertiary);
+  font-weight: 700;
+}
+
+.spore-item-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.progress-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: var(--color-bg-secondary);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.progress-badge {
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+/* Soil Health */
+.health-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.health-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.indicator-blocks {
+  display: flex;
+  gap: 4px;
+}
+
+.block {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.filled-green { background: #00452e; }
+.empty { background: #e2e8f0; }
+.filled-red { background: #ba1a1a; }
+.empty-red { background: #ffdad6; }
+
+/* AI Summary */
+.ai-summary {
+  background: #002d1c;
+  color: white;
+}
+
+.ai-summary .card-heading-small {
+  color: #b1f0ce;
+}
+
+.summary-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  margin-bottom: var(--space-4);
+}
+
+.summary-tags {
+  display: flex;
   gap: var(--space-2);
 }
 
-.new-analysis-btn:hover {
-  background: var(--color-primary-light);
-  border-color: transparent;
-  color: var(--color-text-inverse);
-  transform: translateY(-2px);
+.summary-tag {
+  background: rgba(255,255,255,0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #b1f0ce;
+}
+
+@media (max-width: 1024px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
-  .results-stats {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .disease-meta {
-    flex-direction: column;
-    gap: var(--space-2);
+  .stats-cards-row {
+    grid-template-columns: 1fr;
   }
 }

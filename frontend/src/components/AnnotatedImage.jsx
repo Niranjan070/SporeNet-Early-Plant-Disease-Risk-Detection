@@ -14,10 +14,6 @@ export default function AnnotatedImage({ imageUrl }) {
 
   return (
     <div className="annotated-image">
-      <h3 className="annotated-image-title">
-        <span>🖼️</span> Detection Output
-      </h3>
-
       <div
         className="annotated-image-container"
         onClick={() => setIsFullscreen(true)}

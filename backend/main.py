@@ -11,7 +11,9 @@ from fastapi.staticfiles import StaticFiles
 
 from config import CORS_ORIGINS, OUTPUT_DIR
 from models.predictor import predictor
+from routes.ai import router as ai_router
 from routes.predict import router as predict_router
+from utils.gemini_service import is_gemini_configured
 
 # --- Logging setup ---
 logging.basicConfig(
@@ -59,6 +61,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # --- Routes ---
 app.include_router(predict_router)
+app.include_router(ai_router)
 
 
 # --- Health check endpoint ---
@@ -78,4 +81,5 @@ async def health_check():
     return {
         "status": "healthy" if model_loaded else "degraded",
         "model_loaded": model_loaded,
+        "gemini_configured": is_gemini_configured(),
     }

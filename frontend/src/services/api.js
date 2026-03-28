@@ -5,7 +5,7 @@
 
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000').replace(/\/$/, '');
 
 const apiClient = axios.create({
   baseURL: API_BASE,
@@ -42,6 +42,37 @@ export const predictSpores = async (imageFile, cropType = 'Unknown', onProgress 
  */
 export const checkHealth = async () => {
   const response = await apiClient.get('/health');
+  return response.data;
+};
+
+/**
+ * Send a question to the general farming assistant.
+ * @param {object} payload - Assistant request payload.
+ * @returns {Promise<object>} Assistant reply.
+ */
+export const sendFarmingAssistantMessage = async ({ message, cropType = '', history = [] }) => {
+  const response = await apiClient.post('/ai/chat', {
+    message,
+    crop_type: cropType,
+    history,
+  });
+
+  return response.data;
+};
+
+/**
+ * Ask the image diagnosis assistant about a completed analysis.
+ * @param {object} payload - Image diagnosis payload.
+ * @returns {Promise<object>} Structured diagnosis response.
+ */
+export const requestImageDiagnosis = async ({ analysis, cropType = '', question = '', history = [] }) => {
+  const response = await apiClient.post('/ai/image-diagnosis', {
+    analysis,
+    crop_type: cropType,
+    question,
+    history,
+  });
+
   return response.data;
 };
 

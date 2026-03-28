@@ -1,0 +1,110 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.dashboard-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.dashboard-subtitle {
+  color: var(--color-text-tertiary);
+  font-size: 1rem;
+}
+
+.dashboard-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-6);
+}
+
+.dashboard-stat-card {
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  background: white;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+.dashboard-stat-card .stat-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.dashboard-stat-card .stat-value {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.dashboard-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-8);
+}
+
+.dashboard-chart-card, .dashboard-recent-card {
+  background: white;
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 25px rgba(0,0,0,0.02);
+}
+
+.mock-chart {
+  height: 250px;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-6);
+  background: linear-gradient(to top, var(--color-bg-secondary) 1px, transparent 1px);
+  background-size: 100% 40px;
+}
+
+.chart-bar {
+  flex: 1;
+  background: var(--color-primary);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  color: var(--color-text-tertiary);
+  font-size: 0.8rem;
+}
+
+.mock-map {
+  height: 300px;
+  background: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  position: relative;
+  border: 1px solid var(--color-border);
+}
+
+.map-point {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.map-point.red { background: #EF4444; }
+.map-point.orange { background: #F59E0B; }
+.map-point.green { background: #10B981; }
+
+@media (max-width: 1024px) {
+  .dashboard-main-grid {
+    grid-template-columns: 1fr;
+  }
+}

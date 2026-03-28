@@ -1,0 +1,97 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-8);
+  background: white;
+  border-bottom: 1px solid var(--color-bg-secondary);
+  height: 80px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-links {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.topbar-links a {
+  text-decoration: none;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.topbar-links a.active {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-secondary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  gap: var(--space-2);
+  width: 280px;
+}
+
+.search-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.bell-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--color-border);
+}
+
+.profile-text {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.profile-name {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.profile-role {
+  font-size: 0.7rem;
+  color: var(--color-text-tertiary);
+}
+
+.profile-avatar {
+  background: #10B981;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}

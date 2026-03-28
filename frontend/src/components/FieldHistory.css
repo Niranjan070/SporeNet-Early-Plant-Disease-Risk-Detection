@@ -1,0 +1,91 @@
+.history-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.history-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.history-subtitle {
+  color: var(--color-text-tertiary);
+  font-size: 1rem;
+}
+
+.history-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 25px rgba(0,0,0,0.02);
+  overflow: hidden;
+}
+
+.history-table-wrapper {
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.history-table th {
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-bg-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.history-table td {
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-bg-secondary);
+  font-size: 0.95rem;
+  color: var(--color-text-primary);
+}
+
+.id-cell {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.risk-badge-small {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.risk-badge-small.high { background: #ffdad6; color: #ba1a1a; }
+.risk-badge-small.medium { background: #fef3c7; color: #f59e0b; }
+.risk-badge-small.low { background: #d1fae5; color: #10b981; }
+
+.status-label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.btn-table {
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-table:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}

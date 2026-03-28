@@ -2,11 +2,21 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*.egg-info/
-dist/
-build/
 *.egg
+*.egg-info/
+.coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+htmlcov/
 venv/
+.venv/
+backend/venv/
+backend/.venv/
+
+# Environment files
 .env
 *.env
 backend/.env
@@ -16,10 +26,12 @@ frontend/.env
 backend/static/outputs/*
 !backend/static/outputs/.gitkeep
 
-# Node
+# Node / frontend
 node_modules/
 frontend/node_modules/
 frontend/dist/
+frontend/.vite/
+npm-debug.log*
 
 # IDE
 .vscode/
@@ -31,5 +43,5 @@ frontend/dist/
 .DS_Store
 Thumbs.db
 
-# Model (large file - track with Git LFS or download separately)
+# Model weights
 model/*.pt
