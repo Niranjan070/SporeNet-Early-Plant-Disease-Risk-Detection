@@ -2,15 +2,15 @@
 
 SporeNet is a microscope-image analysis application for early plant disease support. A farmer or field technician uploads a microscopic image, the backend runs YOLO to detect fungal spores, the system estimates spore frequency and disease risk, and Gemini powers two assistants inside the same app:
 
-- a docked farming assistant for general crop questions
-- an image diagnosis assistant that explains the current analyzed sample
+- a floating, immersive farming assistant for general crop questions
+- an image-linked diagnosis assistant that explains the current analyzed sample
 
 ## Final Application Flow
 
 The current UI is organized like this:
 
-- Left side: microscope image upload, YOLO analysis, annotated output, grouped detections, disease summary, and image-linked AI diagnosis
-- Right side: always-available farming assistant that stays visible while the user works through the rest of the app
+- Responsive dashboard: microscope image upload, YOLO analysis, annotated output with **fullscreen view**, grouped detections, disease summary, and image-linked AI diagnosis
+- Floating AI Assistant: always-available chatbot that stays with you while you work through the rest of the app
 
 This makes the app feel like one continuous workflow instead of separate tools.
 
@@ -20,8 +20,8 @@ This makes the app feel like one continuous workflow instead of separate tools.
 - Detect fungal spores using a trained YOLO model
 - Count spores and estimate coverage percentage
 - Predict an early disease signal from spore type and frequency
-- Show an annotated output image for review
-- Ask Gemini for general farming support inside the app
+- Show an annotated output image for review with **native full-screen inspection mode**
+- Ask Gemini for general farming support using the floating 3D AI assistant
 - Ask Gemini for image-specific diagnosis based on the real YOLO result
 
 ## Supported Spore Classes
@@ -40,7 +40,7 @@ The current model supports:
 
 ## Tech Stack
 
-- Frontend: React, Vite, Axios, vanilla CSS
+- Frontend: React, Vite, Axios, Lucide React, vanilla CSS
 - Backend: FastAPI, Ultralytics YOLO, Pillow, OpenCV
 - AI: Google Gemini API
 
