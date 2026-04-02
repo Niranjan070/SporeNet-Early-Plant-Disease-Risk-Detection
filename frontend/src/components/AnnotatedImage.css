@@ -1,40 +1,202 @@
 /* ============================================================
-   AnnotatedImage Component Styles Refined
+   Immersive Annotated Image Component
    ============================================================ */
 
-.annotated-image {
+.annotated-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: #000;
+}
+
+/* DASHBOARD VIEW */
+.stage-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: zoom-in;
+  overflow: hidden;
+  display: flex;
+  background: #0a0a0a;
+}
+
+.stage-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-frame:hover .stage-image {
+  transform: scale(1.05);
+}
+
+.stage-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 1.25rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stage-frame:hover .stage-overlay {
+  opacity: 1;
+}
+
+.expand-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.expand-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: #fff;
+}
+
+/* NATIVE FULLSCREEN API SUPPORT */
+.annotated-card:fullscreen {
+  border-radius: 0;
+  background: #000;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.annotated-card:fullscreen .stage-frame {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+}
+
+.annotated-card:fullscreen .stage-image {
+  object-fit: contain;
+  width: 100%;
   height: 100%;
 }
 
-.annotated-image-title {
+/* Hide the expand button in native fullscreen to avoid double triggers */
+.annotated-card:fullscreen .stage-overlay {
   display: none;
 }
 
-.annotated-image-container {
-  position: relative;
-  overflow: hidden;
-  background: black;
-  cursor: pointer;
-  height: 100%;
-  width: 100%;
-  border-radius: var(--radius-lg);
+/* MODERN UI OVERLAY (FALLBACK OR NON-NATIVE) */
+.modern-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #050505;
+  display: flex;
+  flex-direction: column;
+  animation: overlayFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.annotated-image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.annotated-image-overlay {
+.overlay-header {
   position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
-  font-size: var(--text-xs);
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 2rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
   color: white;
+}
+
+.overlay-branding {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.brand-mark.sm {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.8rem;
+  background: linear-gradient(135deg, #4da37b, var(--accent-strong));
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  box-shadow: 0 0 30px rgba(77, 163, 123, 0.3);
+}
+
+.overlay-branding h3 {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  letter-spacing: -0.04em;
+  color: white;
+}
+
+.close-button {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.overlay-content {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-content img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  animation: imgZoomIn 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes imgZoomIn {
+  from { opacity: 0; transform: scale(1.1); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.placeholder-stage {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  min-height: 14rem;
+  padding: 1.6rem;
+  border-radius: 1.5rem;
+  border: 1px dashed var(--line-strong);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--ink-2);
 }

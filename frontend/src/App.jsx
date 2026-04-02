@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import AIAssistants, { FarmingAssistantPanel } from './components/AIAssistants';
-import { checkHealth, getImageUrl, predictSpores } from './services/api';
+import AnnotatedImage from './components/AnnotatedImage';
+import { checkHealth, predictSpores } from './services/api';
 import './App.css';
 
 const capabilityCards = [
@@ -515,15 +516,7 @@ export default function App() {
               </div>
 
               <div className="visual-stage">
-                {results?.annotated_image_url ? (
-                  <img src={getImageUrl(results.annotated_image_url)} alt="Annotated spore detection result" />
-                ) : previewUrl ? (
-                  <img src={previewUrl} alt="Microscope sample awaiting annotation" />
-                ) : (
-                  <div className="placeholder-stage">
-                    The annotated detection image will appear here after YOLO processes an uploaded sample.
-                  </div>
-                )}
+                <AnnotatedImage imageUrl={results?.annotated_image_url} previewUrl={previewUrl} />
               </div>
 
               <div className="visual-stage-caption">
