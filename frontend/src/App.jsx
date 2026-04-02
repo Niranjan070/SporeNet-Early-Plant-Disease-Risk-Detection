@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import AIAssistants, { FarmingAssistantPanel } from './components/AIAssistants';
+import AIAssistants from './components/AIAssistants';
+import FloatingFarmingAssistant from './components/FloatingFarmingAssistant';
 import AnnotatedImage from './components/AnnotatedImage';
 import { checkHealth, predictSpores } from './services/api';
 import './App.css';
@@ -623,13 +624,11 @@ export default function App() {
           <AIAssistants aiReady={backendStatus.aiReady} cropType={cropType} results={results} onToast={showToast} />
         </main>
 
-        <aside className="app-assistant-rail" aria-label="General farming assistant">
-          <div className="assistant-rail-sticky">
-
-
-            <FarmingAssistantPanel aiReady={backendStatus.aiReady} cropType={cropType} onToast={showToast} docked />
-          </div>
-        </aside>
+      <FloatingFarmingAssistant 
+        aiReady={backendStatus.aiReady} 
+        cropType={cropType} 
+        onToast={showToast} 
+      />
       </div>
 
       {toast ? <div className={`toast ${toast.tone}`}>{toast.message}</div> : null}

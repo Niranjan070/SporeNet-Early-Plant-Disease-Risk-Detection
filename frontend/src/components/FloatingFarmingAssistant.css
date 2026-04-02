@@ -1,0 +1,429 @@
+/* ============================================================
+   Floating Farming Assistant Styles
+   ============================================================ */
+
+.floating-assistant-host {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 10001; /* Above almost everything */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Floating 3D Glowing AI Button */
+.floating-ai-button {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(135deg, var(--accent-strong), #467b5f);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 
+    0 0 20px rgba(34, 76, 56, 0.4),
+    0 0 40px rgba(34, 76, 56, 0.3),
+    0 0 60px rgba(34, 76, 56, 0.2);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.floating-ai-button:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 
+    0 0 30px rgba(34, 76, 56, 0.6),
+    0 0 50px rgba(34, 76, 56, 0.4),
+    0 0 70px rgba(34, 76, 56, 0.3);
+}
+
+.floating-ai-button.open {
+  transform: rotate(90deg) scale(0.95);
+  background: #fff;
+  color: var(--ink-1);
+}
+
+.button-orb-3d {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent 60%);
+  pointer-events: none;
+}
+
+.button-orb-glow {
+  position: absolute;
+  inset: -1rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(45, 107, 80, 0.2), transparent 70%);
+  animation: pulseOrb 3s infinite ease-in-out;
+  pointer-events: none;
+}
+
+/* Chat Interface Overlay */
+.floating-chat-container {
+  position: absolute;
+  bottom: 5rem;
+  right: 0;
+  width: 90vw;
+  max-width: 480px;
+  animation: popUpIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  transform-origin: bottom right;
+}
+
+.floating-chat-glass {
+  position: relative;
+  background: rgba(255, 252, 248, 0.82);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(34, 76, 56, 0.15);
+  border-radius: 2rem;
+  box-shadow: 
+    0 40px 100px rgba(34, 76, 56, 0.18),
+    0 20px 40px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.chat-header {
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(34, 76, 56, 0.08);
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--accent-strong);
+}
+
+.presence-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #4da37b;
+}
+
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.status-badge {
+  padding: 0.3rem 0.6rem;
+  background: rgba(34, 76, 56, 0.08);
+  color: var(--accent-strong);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.pro-badge {
+  padding: 0.3rem 0.6rem;
+  background: rgba(211, 154, 54, 0.14);
+  color: #7d5822;
+  border: 1px solid rgba(211, 154, 54, 0.18);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.chat-close-header {
+  padding: 0.4rem;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.chat-close-header:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--ink-1);
+}
+
+/* Message Viewport */
+.floating-message-viewport {
+  flex: 1;
+  min-height: 300px;
+  max-height: 480px;
+  overflow-y: auto;
+  padding: 1.5rem;
+  scroll-behavior: smooth;
+}
+
+.message-stack-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.message-wrapper {
+  animation: slideUpFade 0.4s ease forwards;
+}
+
+.message-bubble {
+  max-width: 85%;
+  padding: 1rem 1.25rem;
+  border-radius: 1.4rem;
+  position: relative;
+}
+
+.message-bubble.assistant {
+  background: rgba(34, 76, 56, 0.08);
+  border: 1px solid rgba(34, 76, 56, 0.05);
+  align-self: flex-start;
+  border-bottom-left-radius: 0.4rem;
+}
+
+.message-bubble.user {
+  background: linear-gradient(135deg, var(--accent-strong), #4da37b);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 0.4rem;
+  margin-left: auto;
+}
+
+.message-role {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.45rem;
+  opacity: 0.8;
+}
+
+.message-text {
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.5rem 0;
+}
+
+.typing-indicator span {
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--ink-3);
+  border-radius: 50%;
+  animation: typingDot 1.4s infinite;
+  opacity: 0.3;
+}
+
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Advice Card within floating Assistant */
+.farmer-advice-card.floating-advice {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 1.4rem;
+  box-shadow: var(--shadow-lg);
+  max-width: 95%;
+}
+
+.farmer-advice-card.floating-advice h4 {
+  font-size: 1.05rem;
+  margin-top: 0.25rem;
+}
+
+.farmer-advice-card.floating-advice h5 {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  margin-bottom: 0.5rem;
+}
+
+/* Composer Section */
+.chat-composer-section {
+  position: relative;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.chat-input {
+  width: 100%;
+  padding: 1.5rem 1.75rem;
+  border: none;
+  background: transparent;
+  outline: none;
+  resize: none;
+  font: inherit;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink-1);
+}
+
+.chat-input::placeholder {
+  color: var(--ink-3);
+  opacity: 0.7;
+}
+
+.composer-gradient-fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.05));
+  pointer-events: none;
+}
+
+/* Controls Footer */
+.chat-controls-footer {
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid rgba(34, 76, 56, 0.05);
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.attachment-group {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 0.8rem;
+}
+
+.tool-btn {
+  padding: 0.55rem;
+  border-radius: 0.6rem;
+  border: none;
+  background: transparent;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+  background: #fff;
+  color: var(--accent-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.char-meter {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+
+.char-meter .muted { opacity: 0.5; }
+
+.chat-send-btn {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1.1rem;
+  border: none;
+  background: linear-gradient(135deg, var(--accent-strong), #4da37b);
+  color: white;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 12px 24px rgba(34, 76, 56, 0.2);
+}
+
+.chat-send-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 16px 32px rgba(34, 76, 56, 0.3);
+}
+
+.chat-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Bottom Meta */
+.chat-bottom-meta {
+  margin-top: 1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--ink-3);
+  font-size: 0.75rem;
+}
+
+.meta-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.meta-hint kbd {
+  padding: 0.2rem 0.4rem;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+
+.meta-system {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.status-indicator {
+  width: 0.4rem;
+  height: 0.4rem;
+  background: #4da37b;
+  border-radius: 50%;
+}
+
+/* Animations */
+@keyframes popUpIn {
+  0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pulseOrb {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.2); }
+}
+
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes typingDot {
+  0%, 100% { transform: translateY(0); opacity: 0.3; }
+  50% { transform: translateY(-3px); opacity: 0.8; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner.sm {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  position: absolute;
+}

@@ -7,10 +7,6 @@
 .app-layout {
   max-width: 108rem;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 24rem;
-  gap: 1.5rem;
-  align-items: start;
 }
 
 .app-header,
@@ -163,16 +159,7 @@
   padding-bottom: 3rem;
 }
 
-.app-assistant-rail {
-  min-width: 0;
-}
 
-.assistant-rail-sticky {
-  position: sticky;
-  top: 6.5rem;
-  display: grid;
-  gap: 1rem;
-}
 
 
 
