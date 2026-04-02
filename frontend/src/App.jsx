@@ -632,14 +632,7 @@ export default function App() {
 
         <aside className="app-assistant-rail" aria-label="General farming assistant">
           <div className="assistant-rail-sticky">
-            <div className="assistant-rail-intro">
-              <p className="section-kicker">Right-side Assistant</p>
-              <h2>Ask farming questions from anywhere in the app</h2>
-              <p>
-                This panel stays with you while you upload slides, inspect detections, and review the image diagnosis
-                on the left.
-              </p>
-            </div>
+
 
             <FarmingAssistantPanel aiReady={backendStatus.aiReady} cropType={cropType} onToast={showToast} docked />
           </div>
